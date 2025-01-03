@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
             font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;
@@ -35,27 +37,33 @@
         }
 
         .progress-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;  /* Center the items */
-    max-width: 1200px;
-    width: 100%;
-    flex: 1;
-    margin-bottom: 20px;
-    margin-left: auto;  /* Center the entire section */
-    margin-right: auto; /* Center the entire section */
-}
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            /* Center the items */
+            max-width: 1200px;
+            width: 100%;
+            flex: 1;
+            margin-bottom: 20px;
+            margin-left: auto;
+            /* Center the entire section */
+            margin-right: auto;
+            /* Center the entire section */
+        }
 
-.progress-item {
-    background-color: #fff;
-    padding: 10px;  /* Reduce padding */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: calc(30% - 20px);  /* Reduce width */
-    text-align: center;
-    margin: 0 auto;  /* Ensures the items are centered */
-}
+        .progress-item {
+            background-color: #fff;
+            padding: 10px;
+            /* Reduce padding */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: calc(30% - 20px);
+            /* Reduce width */
+            text-align: center;
+            margin: 0 auto;
+            /* Ensures the items are centered */
+        }
 
 
 
@@ -103,17 +111,20 @@
 
         @media (max-width: 768px) {
             .progress-item {
-                width: calc(50% - 20px); /* Two columns for medium screens */
+                width: calc(50% - 20px);
+                /* Two columns for medium screens */
             }
         }
 
         @media (max-width: 500px) {
             .progress-item {
-                width: 100%; /* Single column for small screens */
+                width: 100%;
+                /* Single column for small screens */
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Track Your Progress</h1>
@@ -170,4 +181,5 @@
         <p>Keep going, you're making amazing progress!</p>
     </footer>
 </body>
+
 </html>

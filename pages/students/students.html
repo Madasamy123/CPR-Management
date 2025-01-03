@@ -52,7 +52,7 @@
 </head>
 <body>
     <header>
-        <h1 id="head"></h1>
+        <h1 id="head">Welcome <span id="span"></span>!</h1>
     </header>
     <main>
         <div class="card">
@@ -79,7 +79,7 @@
        
     </main>
     <script>
-        const h1=document.getElementById("head");
+        const h1=document.getElementById("span");
         window.addEventListener("load",()=>{
             h1.textContent=JSON.parse(localStorage.getItem("user")).name
         })
