@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Progress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+        }
+
+        .progress-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;  /* Center the items */
+    max-width: 1200px;
+    width: 100%;
+    flex: 1;
+    margin-bottom: 20px;
+    margin-left: auto;  /* Center the entire section */
+    margin-right: auto; /* Center the entire section */
+}
+
+.progress-item {
+    background-color: #fff;
+    padding: 10px;  /* Reduce padding */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: calc(30% - 20px);  /* Reduce width */
+    text-align: center;
+    margin: 0 auto;  /* Ensures the items are centered */
+}
+
+
+
+        .progress-item h3 {
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+
+        .progress-item p {
+            font-size: 1em;
+            color: #666;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 10px;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+
+        footer p {
+            font-size: 1em;
+        }
+
+        @media (max-width: 768px) {
+            .progress-item {
+                width: calc(50% - 20px); /* Two columns for medium screens */
+            }
+        }
+
+        @media (max-width: 500px) {
+            .progress-item {
+                width: 100%; /* Single column for small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Track Your Progress</h1>
+    </header>
+
+    <section class="progress-section">
+        <div class="progress-item">
+            <h3>English</h3>
+            <p>Goal: Improve English communication skills.</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 70%"></div>
+            </div>
+            <p>70% completed</p>
+        </div>
+
+        <div class="progress-item">
+            <h3>Life Skills</h3>
+            <p>Goal: Develop essential life skills for personal and professional growth.</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 50%"></div>
+            </div>
+            <p>50% completed</p>
+        </div>
+
+        <div class="progress-item">
+            <h3>Technical Skills</h3>
+            <p>Goal: Enhance coding and development knowledge.</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 40%"></div>
+            </div>
+            <p>40% completed</p>
+        </div>
+
+        <div class="progress-item">
+            <h3>Problem Solving</h3>
+            <p>Goal: Improve logical thinking and problem-solving abilities.</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 60%"></div>
+            </div>
+            <p>60% completed</p>
+        </div>
+
+        <div class="progress-item">
+            <h3>Behaviour</h3>
+            <p>Goal: Build better interpersonal and teamwork skills.</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 80%"></div>
+            </div>
+            <p>80% completed</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Keep going, you're making amazing progress!</p>
+    </footer>
+</body>
+</html>

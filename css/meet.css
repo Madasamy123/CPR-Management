@@ -1,0 +1,120 @@
+/* ...............meet coach......................... */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  
+  header {
+  
+    background-color: #007BFF;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    height: 300px;
+    align-content: center;
+
+    
+}
+  
+  h1 {
+    font-size: 2em;
+    color: #333;
+  }
+  
+  section {
+    margin-bottom: 30px;
+  }
+  
+  .coach-info {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .coach-info h2 {
+    margin-bottom: 15px;
+  }
+  
+  .coach-list {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .coach {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    text-align: center;
+  }
+  
+  .coach h3 {
+    margin-bottom: 10px;
+  }
+  
+  .coach p {
+    font-size: 1em;
+    color: #555;
+  }
+  
+  .booking-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .booking-form label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .booking-form select,
+  .booking-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .confirmation {
+    background-color: #e0f7e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .confirmation h2 {
+    color: #333;
+  }
+  
+  .confirmation p {
+    font-size: 1.2em;
+    color: #555;
+  }
+  

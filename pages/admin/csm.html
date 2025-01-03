@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coach-Student Meeting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .student-list {
+            margin-bottom: 20px;
+        }
+        .student-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .student-item:hover {
+            background-color: #ddd;
+        }
+        .confirmation {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Coach-Student Meeting</h1>
+
+        <label for="studentName">Search Student by Name:</label>
+        <input type="text" id="studentName" placeholder="Enter student name" onkeyup="searchStudent()">
+        
+        <div class="student-list" id="studentList"></div>
+
+        <label for="meetingTime">Meeting Time:</label>
+        <input type="text" id="meetingTime" placeholder="Enter meeting time">
+        
+        <label for="meetingPlace">Meeting Place:</label>
+        <input type="text" id="meetingPlace" placeholder="Enter meeting place">
+        
+        <button onclick="confirmDetails()">Save Meeting</button>
+
+        <div class="confirmation" id="confirmationMessage" style="display:none;">
+            <p>Are you sure you want to save the meeting details?</p>
+            <button onclick="saveDetails()">Yes, Save</button>
+            <button onclick="cancelSave()">No, Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const students = [
+            { name: "John Doe", time: "", place: "" },
+            { name: "Jane Smith", time: "", place: "" },
+            { name: "Emily Brown", time: "", place: "" }
+        ];
+
+        function searchStudent() {
+            const name = document.getElementById('studentName').value.toLowerCase();
+            const filteredStudents = students.filter(student => student.name.toLowerCase().includes(name));
+            
+            const studentList = document.getElementById('studentList');
+            studentList.innerHTML = '';
+
+            if (filteredStudents.length > 0) {
+                filteredStudents.forEach(student => {
+                    const studentItem = document.createElement('div');
+                    studentItem.classList.add('student-item');
+                    studentItem.textContent = student.name;
+                    studentItem.onclick = () => selectStudent(student);
+                    studentList.appendChild(studentItem);
+                });
+            } else {
+                studentList.innerHTML = 'No students found';
+            }
+        }
+
+        function selectStudent(student) {
+            // Automatically fill the student name in the input
+            document.getElementById('studentName').value = student.name;
+        }
+
+        function confirmDetails() {
+            document.getElementById('confirmationMessage').style.display = 'block';
+        }
+
+        function saveDetails() {
+            const name = document.getElementById('studentName').value.trim();
+            const time = document.getElementById('meetingTime').value.trim();
+            const place = document.getElementById('meetingPlace').value.trim();
+
+            if (time && place) {
+                if (name) {
+                    const student = students.find(student => student.name.toLowerCase() === name.toLowerCase());
+                    if (student) {
+                        student.time = time;
+                        student.place = place;
+                    } else {
+                        alert("Student not found, but meeting details saved.");
+                    }
+                } else {
+                    alert("Please enter meeting time and place.");
+                }
+                alert("Meeting details saved successfully");
+                resetForm();
+            } else {
+                alert("Please enter valid meeting details.");
+            }
+        }
+
+        function cancelSave() {
+            document.getElementById('confirmationMessage').style.display = 'none';
+        }
+
+        function resetForm() {
+            document.getElementById('studentName').value = '';
+            document.getElementById('meetingTime').value = '';
+            document.getElementById('meetingPlace').value = '';
+            document.getElementById('confirmationMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

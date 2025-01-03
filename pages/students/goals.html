@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See Your Goals</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Section Styles */
+        .goal-section {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            flex: 0 0 auto;
+        }
+
+        .goal-section h2 {
+            color: #007bff;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .goal-section p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .goal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .goal-list li {
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .goal-list li:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            margin-top: auto; /* Push footer to the bottom */
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .goal-section {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>See Your Goals</h1>
+    </header>
+
+    <section class="goal-section">
+        <h2>Short-Term Goals</h2>
+        <p>These are goals that you aim to achieve in the near future (usually within a few months to a year).</p>
+        
+        <ul class="goal-list">
+            <li>Complete a Python project within the next 3 months.</li>
+            <li>Improve time management and organize tasks better.</li>
+            <li>Learn a new programming language (e.g., JavaScript) within 6 months.</li>
+        </ul>
+    </section>
+
+    <section class="goal-section">
+        <h2>Long-Term Goals</h2>
+        <p>These are goals you plan to achieve over a longer period (usually over a year or more).</p>
+
+        <ul class="goal-list">
+            <li>Become proficient in full-stack web development within 3 years.</li>
+            <li>Get a job at a reputed tech company after graduation.</li>
+            <li>Start a tech-related business within 5 years.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>Track your goals and stay motivated!</p>
+    </footer>
+</body>
+</html>

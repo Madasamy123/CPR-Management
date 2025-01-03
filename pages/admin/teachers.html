@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #0061e0;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns layout */
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 130px;
+
+
+
+        }
+        .card h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+            margin-top: 40px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        /* Style for the last card to span full width */
+        .card-full {
+            grid-column: span 3; /* Span across all 3 columns */
+            background-color: #e3f2fd; /* Slightly different color for emphasis */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome, Teacher!</h1>
+        <p>This is the teacher dashboard.</p>
+    </header>
+    <main>
+        <div class="card">
+           <a href="./bookcpr.html"><h2>Book CPR</h2></a> 
+        </div>
+        <div class="card">
+           <a href="/pages/trackgoal.html"> <h2>Track Goals</h2></a>
+        </div>
+        <div class="card">
+            <a href="./dis&feed.html"><h2>Discussion & Feedback</h2></a>
+        </div>
+        <div class="card">
+           <a href="../scores/scores1.html"> <h2>Scores</h2></a>
+        </div>
+        <div class="card">
+           <a href="/pages/ro.html"> <h2>Reflection & Observation</h2></a>
+        </div>
+        <div class="card">
+            <a href="/pages/csm.html"><h2>Meet a Student</h2></a>
+        </div>
+        <!-- Last card spans the entire row -->
+        <div class="card card-full">
+            <h2>Student Progress Overview</h2>
+            <p>This section displays a comprehensive overview of student performance and progress tracking.</p>
+        </div>
+    </main>
+</body>
+</html>

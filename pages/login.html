@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            height: 100vh;  /* Ensure the body height takes up full screen */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;  /* Prevent scrolling */
+        }
+
+        /* Header Styles */
+        .header {
+            width: 100%;
+            background-color: #343a40;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+        }
+
+        .header img {
+            height: 50px;
+        }
+
+        /* Login Container */
+        .login-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            margin-top: 80px;  /* Adjusted to fit under the header */
+            height: auto;  /* Ensure the height is based on the content */
+            min-height: 300px;  /* Set a minimum height for the form */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;  /* Start from the top */
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+
+        #loginMessage {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <img src="/assests/images/logo_freshwork1.png" alt="Logo" />
+    </div>
+
+    <!-- Login Section -->
+    <div class="login-container">
+        <h2>Login</h2>
+        <p id="loginMessage"></p>
+
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Enter your email" required />
+            <input type="password" id="loginPassword" placeholder="Enter your password" required />
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("loginForm");
+            const loginMessage = document.getElementById("loginMessage");
+            const API_URL = "https://cpr-csr-managements.onrender.com";
+
+            loginForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const email = document.getElementById("loginEmail").value;
+                const password = document.getElementById("loginPassword").value;
+
+                try {
+                    const response = await fetch(`${API_URL}/login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email, password }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        loginMessage.style.color = "green";
+                        loginMessage.textContent = "Login successful!";
+
+                        // Store the user data in localStorage
+                        localStorage.setItem("user", JSON.stringify(data));
+
+                        if (data.role === "Student") {
+                            window.location.href = "./students/students.html";
+                        } else if (data.role === "Admin") {
+                            window.location.href = "./admin/teachers.html";
+                        } else if (data.role === "Lead") {
+                            window.location.href = "./leads/lead.html";
+                        } else {
+                            alert("Unknown role. Please contact the administrator.");
+                        }
+                    } else {
+                        loginMessage.style.color = "red";
+                        loginMessage.textContent = data.error || "Login failed!";
+                    }
+                } catch (error) {
+                    console.error("Login error:", error);
+                    loginMessage.style.color = "red";
+                    loginMessage.textContent = "Network error. Please try again later.";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
