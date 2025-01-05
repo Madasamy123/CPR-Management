@@ -14,7 +14,7 @@
     }
 
     header {
-      background-color:  #007bff;
+      background-color: #007bff;
       color: white;
       padding: 20px;
       text-align: center;
@@ -27,7 +27,8 @@
       gap: 20px;
     }
 
-    .left, .right {
+    .left,
+    .right {
       flex: 1;
       background: white;
       padding: 20px;
@@ -46,7 +47,10 @@
       font-weight: bold;
     }
 
-    input, textarea, button, select {
+    input,
+    textarea,
+    button,
+    select {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
@@ -71,7 +75,8 @@
       background-color: white;
     }
 
-    th, td {
+    th,
+    td {
       padding: 10px;
       text-align: left;
       border-bottom: 1px solid #ddd;
@@ -115,17 +120,16 @@
         <select id="monthSelect" onchange="fetchStudents()">
           <option value="January">January</option>
           <option value="February">February</option>
-            <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-          <!-- Add more months here -->
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
         </select>
       </div>
       <table>
@@ -183,7 +187,6 @@
       }
     });
 
-    // Student Management Functions
     const fetchStudents = async () => {
       const month = document.getElementById("monthSelect").value;
       const tableBody = document.getElementById("studentTableBody");
@@ -199,11 +202,16 @@
           row.innerHTML = `
             <td>${student.name}</td>
             <td>${student.email}</td>
-            <td>${student.status}</td>
             <td>
-              <button onclick="updateStatus('${student._id}', '${month}')" 
-              ${student.status === "Completed" ? "disabled" : ""}>
-                Mark Completed
+              <select onchange="updateStatus('${student._id}', '${month}', this.value)">
+                <option value="Not Completed" ${student.status === 'Not Completed' ? 'selected' : ''}>Not Completed</option>
+                <option value="Ongoing" ${student.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
+                <option value="Completed" ${student.status === 'Completed' ? 'selected' : ''}>Completed</option>
+              </select>
+            </td>
+            <td>
+              <button onclick="updateStatus('${student._id}', '${month}', document.getElementById('status-${student._id}').value)">
+                Update Status
               </button>
             </td>
           `;
@@ -214,20 +222,18 @@
       }
     };
 
-    const updateStatus = async (id, month) => {
+    const updateStatus = async (id, month, status) => {
       try {
         await fetch(`https://cpr-csr-managements-1.onrender.com/students/${month}/update`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ _id: id, status: "Completed" }),
+          body: JSON.stringify({ _id: id, status: status }),
         });
         fetchStudents();
       } catch (error) {
         console.error("Error updating status:", error);
       }
     };
-
-    document.addEventListener("DOMContentLoaded", fetchStudents);
   </script>
 </body>
 
