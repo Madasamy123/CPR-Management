@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Calendar with Slot Booking</title>
     <style>
-        body {
+         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom right, #eef2f3, #8e9eab);
             margin: 0;
@@ -189,26 +188,23 @@
     </div>
     <div class="calendar" id="calendar"></div>
 
-    <!-- Booking Form -->
     <div id="booking-form" class="booking-form">
         <h2>Book Slot</h2>
         <p id="selectedDate"></p>
         <input type="time" id="slotTime" placeholder="Enter Time" />
         <input type="text" id="studentName" placeholder="Enter Student Name" />
         <button id="bookButton">Book Slot</button>
-        <button class="close-button" onclick="closeBookingForm()">Cancel</button>
+        <button onclick="closeBookingForm()">Cancel</button>
     </div>
 
-    <!-- Slot Details -->
     <div id="detailsContainer">
         <h2>Slot Details</h2>
         <p id="adminName"></p>
         <p id="studentNameDetails"></p>
         <p id="bookingDate"></p>
         <button id="deleteButton">Delete Slot</button>
-        <button class="close-button" onclick="closeDetails()">Close</button>
+        <button onclick="closeDetails()">Close</button>
     </div>
-
 
     <script>
         const calendar = document.getElementById("calendar");
@@ -222,10 +218,9 @@
             "July", "August", "September", "October", "November", "December",
         ];
 
-        // User info (you can modify this)
-        const user = JSON.parse(localStorage.getItem("user")) || { section: "default", role: "guest", name: "Admin" };
-        const section = user.section;
-        const role = user.role;
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        const section = user.section || "default_section";
+        const role = user.role || "user";
 
         document.getElementById("prevMonth").addEventListener("click", () => changeMonth(-1));
         document.getElementById("nextMonth").addEventListener("click", () => changeMonth(1));
@@ -259,7 +254,7 @@
                 const dayDiv = document.createElement("div");
                 dayDiv.classList.add("day");
                 dayDiv.textContent = day;
-                dayDiv.dataset.date = `${year}-${month + 1}-${day}`;
+                dayDiv.dataset.date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
                 calendar.appendChild(dayDiv);
 
                 dayDiv.addEventListener("click", () => openBookingForm(dayDiv.dataset.date));
@@ -270,7 +265,7 @@
                 .then(events => {
                     events.forEach(event => {
                         const eventDate = new Date(event.start_time);
-                        const eventDateStr = `${eventDate.getFullYear()}-${eventDate.getMonth() + 1}-${eventDate.getDate()}`;
+                        const eventDateStr = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, "0")}-${String(eventDate.getDate()).padStart(2, "0")}`;
                         const dayElement = document.querySelector(`[data-date="${eventDateStr}"]`);
                         if (dayElement) {
                             dayElement.classList.add("highlighted");
@@ -292,52 +287,66 @@
         }
 
         function submitBookingForm(date) {
+            const slotTime = document.getElementById("slotTime").value;
             const studentName = document.getElementById("studentName").value.trim();
-            const slotTime = document.getElementById("slotTime").value.trim();
 
-            if (!studentName || !slotTime) {
-                alert("Please enter the student's name and slot time.");
+            if (!slotTime) {
+                alert("Please enter a valid time.");
                 return;
             }
 
-            // Format the date and time
-            const formattedDateTime = `${date} ${slotTime}`;
+            if (!studentName) {
+                alert("Please enter the student's name.");
+                return;
+            }
+
+            const bookingData = {
+                date,
+                time: slotTime,
+                admin: user.name,
+                student: studentName,
+                role,
+                section,
+            };
 
             fetch(`https://cpr-csr-managements-1.onrender.com/book-slot-${section}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    date: date,
-                    time: slotTime,
-                    admin: user.name,
-                    student: studentName,
-                    role,
-                    section,
-                }),
+                body: JSON.stringify(bookingData),
             })
                 .then(res => res.json())
                 .then(data => {
-                    alert(data.message || data.error);
+                    alert(data.message || "Slot booked successfully.");
                     closeBookingForm();
                     loadCalendar(displayedYear, displayedMonth);
                 })
-                .catch(err => console.error("Error booking slot:", err));
+                .catch(err => {
+                    console.error("Error booking slot:", err);
+                    alert(err.message || "Failed to book slot. Please try again.");
+                });
         }
 
         function openBookingDetails(slotId) {
             fetch(`https://cpr-csr-managements-1.onrender.com/slot-details/${section}/${slotId}`)
                 .then(res => res.json())
                 .then(data => {
-                    document.getElementById("detailsContainer").style.display = "block";
-                    document.getElementById("adminName").textContent =` Admin: ${data.admin}`;
-                    document.getElementById("studentNameDetails").textContent = `Student: ${data.student}`;
-                    document.getElementById("bookingDate").textContent = `Date: ${new Date(data.start_time).toLocaleString()}`;
-                    document.getElementById("deleteButton").onclick = () => deleteSlot(slotId);
-                    document.getElementById("booking-form").style.display = "none";
+                    if (data && data.admin && data.student && data.start_time) {
+                        document.getElementById("booking-form").style.display = "none";
+                        document.getElementById("detailsContainer").style.display = "block";
+                        document.getElementById("adminName").textContent = `Admin: ${data.admin}`;
+                        document.getElementById("studentNameDetails").textContent = `Student: ${data.student}`;
+                        document.getElementById("bookingDate").textContent = `Date: ${new Date(data.start_time).toLocaleString()}`;
+                        document.getElementById("deleteButton").onclick = () => deleteSlot(slotId);
+                    } else {
+                        alert("Missing required slot data.");
+                    }
                 })
-                .catch(err => console.error("Error fetching slot details:", err));
+                .catch(err => {
+                    console.error("Error fetching slot details:", err);
+                    alert("Failed to fetch slot details. Please try again.");
+                });
         }
 
         function closeDetails() {
@@ -348,11 +357,14 @@
             fetch(`https://cpr-csr-managements-1.onrender.com/delete-slot/${section}/${slotId}`, { method: "DELETE" })
                 .then(res => res.json())
                 .then(data => {
-                    alert(data.message || data.error);
+                    alert(data.message || "Slot deleted successfully.");
                     closeDetails();
                     loadCalendar(displayedYear, displayedMonth);
                 })
-                .catch(err => console.error("Error deleting slot:", err));
+                .catch(err => {
+                    console.error("Error deleting slot:", err);
+                    alert("Failed to delete slot. Please try again.");
+                });
         }
 
         loadCalendar(displayedYear, displayedMonth);
