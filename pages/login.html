@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,11 +52,11 @@
             color: #343a40;
         }
 
-        .login-container input {
-            width: 100%;
+      #loginEmail{
+            width: 90%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ced4da;
+            border: 1px solid black;
             border-radius: 5px;
             font-size: 16px;
         }
@@ -118,20 +119,67 @@
                 transform: rotate(360deg);
             }
         }
+
+        .fa-eye{
+         margin-right: 10px;
+      
+        }
+
+  
+
+
+        .password{
+     width: 90%;
+     height: 20px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+   
+    border: 1px solid black;
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px 0px;
+    
+        }
+        .password input{
+            border: none; /* Remove input border */
+    outline: none; /* Remove focus outline */
+    padding: 10px;
+    flex: 1; /* Allow input to take remaining space */
+    font-size: 16px;
+            
+        }
+
+
+        #loginForm button{
+            width: 95%;
+
+        }
+
+        
+
     </style>
 </head>
 <body>
     <div class="header">
-        <img src="/assests/images/logo_freshwork1.png" alt="Logo" />
+        <img src="../assests/images/logo_freshwork1.png" alt="Logo"  draggable="false"/>
     </div>
 
     <div class="login-container">
-        <h2>Login</h2>
+        <h2>LOGIN</h2>
         <p id="loginMessage"></p>
         <form id="loginForm">
             <input type="email" id="loginEmail" placeholder="Enter your email" required />
-            <input type="password" id="loginPassword" placeholder="Enter your password" required />
+           
+            <span class="password">
+               
+                <input type="password" id="loginPassword" placeholder="Enter your password" required />
+                <i class="fa-solid fa-eye" id="showpswdlogin"></i>
+            </span>
             <button type="submit">Login</button>
+           
         </form>
     </div>
 
@@ -189,7 +237,7 @@
     } else {
         loginMessage.style.color = "red";
         loginMessage.textContent = data.error || "Login failed!";
-        
+
     }
 } catch (error) {
     console.error("Login error:", error);
@@ -201,6 +249,51 @@
 
             });
         });
+
+
+
+
+
+        // login showpassword
+
+
+
+
+//show password login 
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Select the password input and eye icon elements
+    const eyeIcon = document.getElementById("showpswdlogin");
+    const passwordInput = document.getElementById("loginPassword");
+
+    // Check if both elements exist before adding the event listener
+    if (eyeIcon && passwordInput) {
+        eyeIcon.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove("fa-eye-slash");
+                eyeIcon.classList.add("fa-eye");
+            }
+        });
+    } else {
+        console.error("Either the eye icon or the password input field is missing.");
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
     </script>
 </body>
 </html>
