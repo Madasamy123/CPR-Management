@@ -4,47 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <style>
-        body {
+    body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 20px;
-            background-color: #f9f9f9;
+            background-color: #f3f4f7;
+            margin: 0;
+            padding: 0;
         }
 
+
         header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding:20px;
-    background-color:seagreen; /* Optional background color */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #4caf50, #087f23);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 60px;
    }
 
-        .header_name {
+    .header_name {
     flex-grow: 1;
     text-align: center; /* Center aligns the name */
   }
 
+  .header_name span {
+            font-weight: bold;
+            color: #ffeb3b;
+        }
+
   .header_name h1 {
     margin: 0;
-    font-size: 24px;
-    color: #333; /* Optional font color */
+            font-size: 1.8rem;
+            color: #fff;
   }
 
+ 
   .header_icon {
-    display: flex;
-    gap: 15px; /* Space between icons */
-    justify-content: flex-end; /* Push icons to the right */
-  
+            display: flex;
+            gap: 15px;
+        
   }
 
-  .header_icon a img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover; /* Ensure icons look good */
-    cursor: pointer; /* Show pointer on hover */
-    border-radius: 50%;
-  }
+  .header_icon i {
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .header_icon i:hover {
+            transform: scale(1.1);
+            color: #ffeb3b;
+        }
 
         span {
             font-weight: bold;
@@ -52,36 +66,41 @@
 
         main {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns layout */
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            padding: 20px;
+            padding: 30px;
         }
 
         .card {
-            padding: 20px;
             background-color: white;
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-            height: 130px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            height: 160px;
         }
 
         .card h2 {
-            margin: 0;
-            font-size: 18px;
+            margin: 10px 0;
+            font-size: 1.2rem;
             color: #333;
-            margin-top: 40px;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
         /* Style for the last card to span full width */
+      
         .card-full {
-            grid-column: span 3; /* Span across all 3 columns */
-            background-color: #e3f2fd; /* Slightly different color for emphasis */
+            grid-column: span 3;
+            background-color: #e0f7fa;
+            color: #00796b;
+            padding: 30px;
+            text-align: left;
         }
 
         /* Styling for anchor links inside cards */
@@ -120,9 +139,9 @@
         </div>
        
         <div class="header_icon">
-            <a href="../common/change.html"><img src="https://icons.veryicon.com/png/o/business/background-management-system/change-password-5.png" alt="" draggable="false"></a>
-            <a href="../common/register.html"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4fFCl64VsC2EEhhbI6SAtLZQAnEIw5sZPNA&s" alt="" draggable="false"></a>
-            <a href="../common/delete-user.html"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsiESo2ZhBX7G9ej1f2d0C6UGYvpDx0kkkzw&s" alt="" draggable="false"></a>
+            <a href="../common/change.html"><i class="fa-solid fa-lock"></i></a>
+            <a href="../common/register.html"><i class="fa-solid fa-user-plus"></i></a>
+            <a href="../common/delete-user.html"><i class="fa-solid fa-user-minus"></i></a>
             
 
         </div>
@@ -134,7 +153,7 @@
             <a href="./bookcpr.html"><h2>Book CPR</h2></a> 
         </div>
         <div class="card">
-            <a href="/pages/trackgoal.html"><h2>Track Goals</h2></a>
+            <a href="./track-goals-admin.html"><h2>Track Goals</h2></a>
         </div>
         <div class="card">
             <a href="./dis&feed.html"><h2>Discussion & Feedback</h2></a>
