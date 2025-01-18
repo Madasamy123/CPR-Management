@@ -7,19 +7,22 @@
     <title>Admin Feedback Dashboard</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f7f9fc;
+            background: linear-gradient(135deg, #1d2671, #c33764); /* Gradient background */
+            color: #ffffff;
             text-align: center;
+            min-height: 100vh;
         }
 
         h1 {
             color: #ffffff;
-            background-color: #4a90e2;
+            background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient header */
             padding: 20px;
             margin: 0;
             font-size: 2.5em;
+            border-bottom: 5px solid rgba(255, 255, 255, 0.2);
         }
 
         ul.feedback-list {
@@ -30,29 +33,30 @@
         }
 
         ul.feedback-list li {
-            background-color: #ffffff;
+            background: linear-gradient(135deg, #11998e, #38ef7d); /* Soft gradient card */
             margin-bottom: 15px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             text-align: left;
+            color: #ffffff;
         }
 
         .feedback-item .date {
             font-size: 0.85em;
-            color: #666;
+            color: #c7ecee;
             margin-bottom: 5px;
             display: block;
         }
 
         .feedback-item .content {
             font-size: 1em;
-            color: #333;
+            color: #ffffff;
         }
 
         #logoutBtn {
-            background-color: #ff6b6b;
-            color: white;
+            background: linear-gradient(135deg, #ff6a00, #ee0979); /* Bright button gradient */
+            color: #ffffff;
             border: none;
             padding: 12px 25px;
             border-radius: 25px;
@@ -60,18 +64,19 @@
             cursor: pointer;
             margin: 30px auto;
             display: inline-block;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-decoration: none;
         }
 
         #logoutBtn:hover {
-            background-color: #e63939;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 135, 0.3);
         }
 
         footer {
             margin-top: 40px;
             font-size: 0.9em;
-            color: #666;
+            color: rgba(255, 255, 255, 0.8);
         }
     </style>
     <script>
@@ -91,7 +96,7 @@
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({ email }) // Send email in the request body
+                            body: JSON.stringify({ email })
                         });
 
                         if (response.ok) {
@@ -114,12 +119,10 @@
                     }
                 };
 
-                // Fetch feedback immediately and then every 3 seconds
                 await fetchFeedback();
                 setInterval(fetchFeedback, 3000);
             }
 
-            // Logout functionality
             document.getElementById("logoutBtn").addEventListener("click", () => {
                 localStorage.removeItem("user");
                 window.location.href = "/index.html";
