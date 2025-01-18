@@ -1,16 +1,17 @@
+<!-- Feedback Page -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feedback and Student Management</title>
+  <title>Submit Feedback</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f9f9f9;
+      background-color: #f3f4f6;
     }
 
     header {
@@ -21,15 +22,8 @@
     }
 
     .container {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px;
-      gap: 20px;
-    }
-
-    .left,
-    .right {
-      flex: 1;
+      max-width: 600px;
+      margin: 50px auto;
       background: white;
       padding: 20px;
       border-radius: 8px;
@@ -42,18 +36,15 @@
     }
 
     label {
-      margin: 10px 0 5px;
-      display: block;
       font-weight: bold;
+      margin-top: 10px;
+      display: block;
     }
 
-    input,
-    textarea,
-    button,
-    select {
+    input, textarea, button {
       width: 100%;
       padding: 10px;
-      margin-bottom: 15px;
+      margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
@@ -68,88 +59,30 @@
     button:hover {
       background-color: #0056b3;
     }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: white;
-    }
-
-    th,
-    td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
   </style>
 </head>
 
 <body>
   <header>
-    <h1>Feedback and Student Management</h1>
+    <h1>Submit Feedback</h1>
   </header>
-
   <div class="container">
-    <!-- Left Section: Feedback Form -->
-    <div class="left">
-      <h2>Submit Feedback</h2>
-      <form id="feedbackForm">
-        <label for="from">Your Email:</label>
-        <input type="email" id="from" placeholder="Enter your email" required />
+    <form id="feedbackForm">
+      <label for="from">Your Email:</label>
+      <input type="email" id="from" placeholder="Enter your email" required />
 
-        <label for="to">Receiver's Email:</label>
-        <input type="email" id="to" placeholder="Enter receiver's email" required />
+      <label for="to">Receiver's Email:</label>
+      <input type="email" id="to" placeholder="Enter receiver's email" required />
 
-        <label for="feedback">Feedback:</label>
-        <textarea id="feedback" placeholder="Write your feedback" required></textarea>
+      <label for="feedback">Feedback:</label>
+      <textarea id="feedback" placeholder="Write your feedback" rows="5" required></textarea>
 
-        <button type="submit">Submit</button>
-      </form>
-      <p id="responseMessage"></p>
-    </div>
-
-    <!-- Right Section: Student Management -->
-    <div class="right">
-      <h2>Student Management</h2>
-      <div class="controls">
-        <label for="monthSelect">Select Month:</label>
-        <select id="monthSelect" onchange="fetchStudents()">
-          <option value="January">January</option>
-          <option value="February">February</option>
-          <option value="March">March</option>
-          <option value="April">April</option>
-          <option value="May">May</option>
-          <option value="June">June</option>
-          <option value="July">July</option>
-          <option value="August">August</option>
-          <option value="September">September</option>
-          <option value="October">October</option>
-          <option value="November">November</option>
-          <option value="December">December</option>
-        </select>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="studentTableBody">
-          <!-- Student rows will be populated here -->
-        </tbody>
-      </table>
-    </div>
+      <button type="submit">Submit Feedback</button>
+    </form>
+    <p id="responseMessage"></p>
   </div>
 
   <script>
-    // Feedback Form Submission
     document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -164,11 +97,7 @@
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            from: sender,
-            to: receiver,
-            feedback: feedback,
-          }),
+          body: JSON.stringify({ from: sender, to: receiver, feedback }),
         });
 
         const data = await response.json();
@@ -186,54 +115,6 @@
         responseMessage.textContent = "An error occurred. Please try again.";
       }
     });
-
-    const fetchStudents = async () => {
-      const month = document.getElementById("monthSelect").value;
-      const tableBody = document.getElementById("studentTableBody");
-      tableBody.innerHTML = "";
-
-      try {
-        const response = await fetch(`https://cpr-csr-managements-1.onrender.com/students/${month}`);
-        if (!response.ok) throw new Error("Failed to fetch students");
-
-        const students = await response.json();
-        students.forEach(student => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${student.name}</td>
-            <td>${student.email}</td>
-            <td>
-              <select onchange="updateStatus('${student._id}', '${month}', this.value)">
-                <option value="Not Completed" ${student.status === 'Not Completed' ? 'selected' : ''}>Not Completed</option>
-                <option value="Ongoing" ${student.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
-                <option value="Completed" ${student.status === 'Completed' ? 'selected' : ''}>Completed</option>
-              </select>
-            </td>
-            <td>
-              <button onclick="updateStatus('${student._id}', '${month}', document.getElementById('status-${student._id}').value)">
-                Update Status
-              </button>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error("Error fetching students:", error);
-      }
-    };
-
-    const updateStatus = async (id, month, status) => {
-      try {
-        await fetch(`https://cpr-csr-managements-1.onrender.com/students/${month}/update`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ _id: id, status: status }),
-        });
-        fetchStudents();
-      } catch (error) {
-        console.error("Error updating status:", error);
-      }
-    };
   </script>
 </body>
 

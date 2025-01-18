@@ -6,36 +6,69 @@
     <title>Admin Dashboard</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            padding: 0;
+            background: linear-gradient(120deg, #84fab0, #8fd3f4);
+            color: #333;
         }
+
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
+
         h1, h2 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
-        label, select, input, button {
+
+        h1 {
+            font-size: 2em;
+            color: #007BFF;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #555;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+
+        input, select, button {
             width: 100%;
-            margin: 10px 0;
-            padding: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1em;
         }
+
+        input:focus, select:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
         button {
             background-color: #007BFF;
-            color: white;
+            color: #fff;
             font-weight: bold;
+            border: none;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
         button:hover {
             background-color: #0056b3;
         }
@@ -43,11 +76,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Admin Dashboard</h1>
+        <!-- <h1>Admin Dashboard</h1> -->
         <h2>Add Goals for a Student</h2>
-
-        <!-- <label for="section-select">Select Section:</label>
-        <select id="section-select"></select> -->
 
         <label for="month-select">Select Month:</label>
         <select id="month-select">
@@ -66,7 +96,7 @@
         </select>
 
         <label for="from-input">From (Admin Name):</label>
-        <input type="text" id="from-input" placeholder="Enter your name (Admin)" />
+        <input type="text" id="from-input" placeholder="Admin name will appear here" readonly />
 
         <label for="to-input">To (Student Name):</label>
         <input type="text" id="to-input" placeholder="Enter the student's name" />
@@ -86,7 +116,20 @@
         <button id="submit-goals-btn">Submit Goals</button>
     </div>
 
+
     <script>
+
+         // Get admin name from localStorage and set it in the 'From' input field
+         document.addEventListener('DOMContentLoaded', () => {
+            const adminName = JSON.parse(localStorage.getItem('user'))?.name || 'Unknown Admin';
+            document.getElementById('from-input').value = adminName;
+        });
+
+        const submitGoalsButton = document.getElementById('submit-goals-btn');
+        submitGoalsBtn.addEventListener('click', () => {
+            alert('Goals submitted successfully!');
+        });
+
         const API_BASE_URL = 'https://cpr-csr-managements-1.onrender.com';
         const sectionSelect = JSON.parse(localStorage.getItem('user')).section;
         const monthSelect = document.getElementById('month-select');
@@ -194,6 +237,9 @@
             fetchSections();
             // populateMonths();
         });
+
+
+        
     </script>
 </body>
 </html>
