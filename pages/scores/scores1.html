@@ -269,12 +269,7 @@
 
                 <h2>Admin: View All Student Scores</h2>
                 <form id="viewAllScoresForm" class="form-container">
-                    <label for="selectSection">Select Section:</label>
-                    <select id="selectSection">
-                        <option value="A">Section A</option>
-                        <option value="B">Section B</option>
-                        <option value="C">Section C</option>
-                    </select>
+        
 
                     <label for="selectMonth">Select Month:</label>
                     <select id="selectMonth">
@@ -300,7 +295,7 @@
             // Handle form submission for viewing scores in a section and month
             document.getElementById('viewAllScoresForm').addEventListener('submit', async (event) => {
                 event.preventDefault();
-                const selectedSection = document.getElementById('selectSection').value;
+                const selectedSection = JSON.parse(localStorage.getItem("user")).section;
                 const selectedMonth = document.getElementById('selectMonth').value;
                 const result = await fetchData(`https://cpr-csr-managements-1.onrender.com/get_scores_by_month?section=${selectedSection}&month=${selectedMonth}`);
 
