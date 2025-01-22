@@ -22,6 +22,18 @@
             color: #333;
         }
 
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .left, .right {
+            flex: 1;
+        }
+
         /* Form Container Styles */
         .form-container {
             background-color: #fff;
@@ -29,12 +41,6 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 400px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .form-container label {
@@ -70,6 +76,10 @@
         .scores-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table-container {
             margin-top: 20px;
         }
 
@@ -225,6 +235,9 @@
 
         }   else if (role === "admin") {
             contentDiv.innerHTML = `
+            <div class="container">
+
+                <div class="left">
                 <h2>Admin: Add Scores for a Student</h2>
                 <form id="adminForm" class="form-container">
                     <label for="studentEmail">Student Email:</label>
@@ -267,6 +280,10 @@
                     <button type="submit">Submit Scores</button>
                 </form>
 
+                </div>
+
+                <div class="right">
+
                 <h2>Admin: View All Student Scores</h2>
                 <form id="viewAllScoresForm" class="form-container">
                     <label for="selectSection">Select Section:</label>
@@ -295,6 +312,8 @@
                     <button type="submit">View Scores</button>
                 </form>
                 <div id="scoresTableContainer" class="table-container"></div>
+                </div>
+                </div>
             `;
 
             // Handle form submission for viewing scores in a section and month
