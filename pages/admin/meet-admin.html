@@ -12,7 +12,7 @@
             padding: 0;
             background-color: #f9f9f9;
         }
-
+        
         .container {
             max-width: 900px;
             margin: 50px auto;
@@ -21,19 +21,20 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-
-        h1, h2 {
+        
+        h1,
+        h2 {
             text-align: center;
             color: #333;
         }
-
+        
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 10px;
             margin: 20px 0;
         }
-
+        
         .calendar-date {
             padding: 10px;
             text-align: center;
@@ -42,25 +43,25 @@
             background-color: #f0f0f0;
             cursor: pointer;
         }
-
+        
         .calendar-date.booked {
             background-color: #f8d7da;
             color: #721c24;
             cursor: not-allowed;
         }
-
+        
         .calendar-date.available {
             background-color: #d4edda;
             color: #155724;
         }
-
+        
         .slots {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
         }
-
+        
         .slot {
             padding: 10px 15px;
             border: 1px solid #ddd;
@@ -68,22 +69,22 @@
             cursor: pointer;
             text-align: center;
         }
-
+        
         .slot.booked {
             background-color: #f8d7da;
             color: #721c24;
             cursor: not-allowed;
         }
-
+        
         .slot.available {
             background-color: #d4edda;
             color: #155724;
         }
-
+        
         .hidden {
             display: none;
         }
-
+        
         button {
             margin-top: 10px;
             padding: 5px 10px;
@@ -94,11 +95,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
+        
         button.delete {
             background-color: #ff4d4d;
         }
-
+        
         button:disabled {
             background-color: gray;
             cursor: not-allowed;
@@ -110,7 +111,7 @@
     <div class="container">
         <h1>Meetup Slot Booking</h1>
         <h2>Select a Section</h2>
-        <select id="sectionSelect">
+        <select id="sectionSelect" disabled>
             <option value="A">Section A</option>
             <option value="B">Section B</option>
         </select>
@@ -144,7 +145,7 @@
     <script>
         const apiUrl = "https://cpr-csr-managements-meets.onrender.com"; // Adjust if backend is hosted elsewhere
 
-        const sectionSelect = document.getElementById("sectionSelect");
+        const sectionSelect = JSON.parse(localStorage.getItem("user")).section;
         const sectionHeader = document.getElementById("sectionHeader");
         const calendarElement = document.getElementById("calendar");
         const slotsContainer = document.getElementById("slots-container");
@@ -222,13 +223,16 @@
             };
 
             fetch(`${apiUrl}/book_slot`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(bookingData)
-            })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(bookingData)
+                })
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message || "Slot booked successfully!");
+                    window.onload;
                     fetchSlots(bookingData.section, bookingData.date);
                 })
                 .catch(error => console.error("Failed to book slot:", error));
@@ -264,10 +268,16 @@
         // Delete a booked slot
         function deleteSlot(section, date, time) {
             fetch(`${apiUrl}/delete_slot`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ section, date, time })
-            })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        section,
+                        date,
+                        time
+                    })
+                })
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message || "Slot deleted successfully!");
@@ -277,12 +287,12 @@
         }
 
         // Initialize with the default section
-        sectionSelect.addEventListener("change", event => {
-            fetchCalendar(event.target.value);
-        });
+        //sectionSelect.addEventListener("change", event => {
+        //            fetchCalendar(event.target.value);
+        //});
 
         // Load the calendar when the page loads
-        fetchCalendar(sectionSelect.value);
+        fetchCalendar(sectionSelect);
     </script>
 </body>
 
