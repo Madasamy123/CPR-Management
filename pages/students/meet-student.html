@@ -107,7 +107,7 @@
     <div class="container">
         <h1>Meetup Slot Booking</h1>
         <h2>Select a Section</h2>
-        <select id="sectionSelect">
+        <select id="sectionSelect" disabled>
             <option value="A">Section A</option>
             <option value="B">Section B</option>
         </select>
@@ -136,7 +136,7 @@
     <script>
         const apiUrl = "https://cpr-csr-managements-meets.onrender.com"; // Adjust if backend is hosted elsewhere
 
-        const sectionSelect = document.getElementById("sectionSelect");
+        const sectionSelect = JSON.parse(localStorage.getItem("user")).section;
         const calendarElement = document.getElementById("calendar");
         const slotsContainer = document.getElementById("slots-container");
         const slotsElement = document.getElementById("slots");
@@ -144,8 +144,8 @@
         const bookingForm = document.getElementById("bookingForm");
 
         // Fetch calendar data based on section
-        function fetchCalendar(section) {
-            fetch(`${apiUrl}/calendar/${section}`)
+        function fetchCalendar(sectionSelect) {
+            fetch(`${apiUrl}/calendar/${sectionSelect}`)
                 .then(response => response.json())
                 .then(data => {
                     calendarElement.innerHTML = ""; // Clear previous calendar
@@ -156,7 +156,7 @@
                         dateDiv.dataset.date = date.date;
 
                         if (!date.fully_booked) {
-                            dateDiv.addEventListener("click", () => fetchSlots(section, date.date));
+                            dateDiv.addEventListener("click", () => fetchSlots(sectionSelect, date.date));
                         }
 
                         calendarElement.appendChild(dateDiv);
@@ -166,8 +166,8 @@
         }
 
         // Fetch available slots for a selected date and section
-        function fetchSlots(section, date) {
-            fetch(`${apiUrl}/slots/${section}/${date}`)
+        function fetchSlots(sectionSelect, date) {
+            fetch(`${apiUrl}/slots/${sectionSelect}/${date}`)
                 .then(response => response.json())
                 .then(data => {
                     slotsElement.innerHTML = ""; // Clear previous slots
@@ -177,7 +177,7 @@
                         slotDiv.innerText = slot.time;
 
                         if (!slot.booked) {
-                            slotDiv.addEventListener("click", () => showBookingForm(section, date, slot.time));
+                            slotDiv.addEventListener("click", () => showBookingForm(sectionSelect, date, slot.time));
                         }
 
                         slotsElement.appendChild(slotDiv);
@@ -188,10 +188,10 @@
         }
 
         // Show the booking form
-        function showBookingForm(section, date, slot) {
+        function showBookingForm(sectionSelect, date, slot) {
             document.getElementById("selectedDate").value = date;
             document.getElementById("selectedSlot").value = slot;
-            document.getElementById("selectedSection").value = section;
+            document.getElementById("selectedSection").value = sectionSelect;
             bookingContainer.classList.remove("hidden");
         }
 
@@ -215,18 +215,18 @@
                 .then(data => {
                     alert(data.message || "Slot booked successfully!");
                     // After booking, fetch the updated slots (including booked slots)
-                    fetchSlots(bookingData.section, bookingData.date);
+                    fetchSlots(bookingData.sectionSelect, bookingData.date);
                 })
                 .catch(error => console.error("Failed to book slot:", error));
         });
 
         // Load the calendar when the page loads for the selected section
-        sectionSelect.addEventListener("change", (event) => {
-            fetchCalendar(event.target.value);
-        });
+        //sectionSelect.addEventListener("change", (event) => {
+          //  fetchCalendar(event.target.value);
+        //});
 
-        // Initialize with the default section
-        fetchCalendar(sectionSelect.value);
+        // Initialize with the default sectiona 
+        fetchCalendar(sectionSelect);
     </script>
 </body>
 
