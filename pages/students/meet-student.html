@@ -12,7 +12,7 @@
             padding: 0;
             background-color: #f9f9f9;
         }
-
+        
         .container {
             max-width: 900px;
             margin: 50px auto;
@@ -21,20 +21,20 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-
+        
         h1,
         h2 {
             text-align: center;
             color: #333;
         }
-
+        
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 10px;
             margin: 20px 0;
         }
-
+        
         .calendar-date {
             padding: 10px;
             text-align: center;
@@ -43,25 +43,25 @@
             background-color: #f0f0f0;
             cursor: pointer;
         }
-
+        
         .calendar-date.booked {
             background-color: #f8d7da;
             color: #721c24;
             cursor: not-allowed;
         }
-
+        
         .calendar-date.available {
             background-color: #d4edda;
             color: #155724;
         }
-
+        
         .slots {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
         }
-
+        
         .slot {
             padding: 10px 15px;
             border: 1px solid #ddd;
@@ -69,22 +69,22 @@
             cursor: pointer;
             text-align: center;
         }
-
+        
         .slot.booked {
             background-color: #f8d7da;
             color: #721c24;
             cursor: not-allowed;
         }
-
+        
         .slot.available {
             background-color: #d4edda;
             color: #155724;
         }
-
+        
         .hidden {
             display: none;
         }
-
+        
         button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -95,7 +95,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
+        
         button:disabled {
             background-color: gray;
             cursor: not-allowed;
@@ -134,7 +134,7 @@
     </div>
 
     <script>
-        const apiUrl = "https://cpr-csr-managements-meets.onrender.com"; // Adjust if backend is hosted elsewhere
+        const apiUrl = "https://cpr-csr-managements-meets-kca5.onrender.com"; // Adjust if backend is hosted elsewhere
 
         const sectionSelect = JSON.parse(localStorage.getItem("user")).section;
         const calendarElement = document.getElementById("calendar");
@@ -207,10 +207,12 @@
             };
 
             fetch(`${apiUrl}/book_slot`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(bookingData)
-            })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(bookingData)
+                })
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message || "Slot booked successfully!");
@@ -222,7 +224,7 @@
 
         // Load the calendar when the page loads for the selected section
         //sectionSelect.addEventListener("change", (event) => {
-          //  fetchCalendar(event.target.value);
+        //  fetchCalendar(event.target.value);
         //});
 
         // Initialize with the default sectiona 

@@ -13,19 +13,20 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-           background-color: #fff;
+            background-color: #fff;
             color: #ffffff;
         }
-
+        
         header {
-            background: #0056b3; /* Coral gradient */
+            background: #0056b3;
+            /* Coral gradient */
             color: #ffffff;
             text-align: center;
             padding: 15px 0;
             font-size: 1.5rem;
             font-weight: bold;
         }
-
+        
         .container {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 16px;
@@ -37,22 +38,24 @@
             animation: fadeIn 0.5s ease-in-out;
             margin: auto;
         }
-
+        
         h1 {
             font-size: 2.5rem;
-            color: #ff7e5f; /* Coral */
+            color: #ff7e5f;
+            /* Coral */
             margin-bottom: 20px;
         }
-
+        
         p {
             font-size: 1rem;
             color: #333;
             line-height: 1.6;
             margin-bottom: 20px;
         }
-
+        
         .slot-card {
-            background: linear-gradient(135deg, #11998e, #38ef7d); /* Aqua-green gradient */
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            /* Aqua-green gradient */
             padding: 20px;
             border-radius: 12px;
             margin: 20px 0;
@@ -60,24 +63,26 @@
             text-align: left;
             color: #ffffff;
         }
-
+        
         .slot-card h3 {
             font-size: 1.5rem;
             margin-bottom: 10px;
         }
-
+        
         .slot-card p {
             font-size: 1rem;
         }
-
+        
         .error-message {
-            color: #e74c3c; /* Bright red */
+            color: #e74c3c;
+            /* Bright red */
             font-size: 1.1rem;
             margin-top: 15px;
         }
-
+        
         button {
-            background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59); /* Vibrant rainbow gradient */
+            background: linear-gradient(135deg, #12c2e9, #c471ed, #f64f59);
+            /* Vibrant rainbow gradient */
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -87,33 +92,30 @@
             transition: transform 0.3s, box-shadow 0.3s;
             margin-top: 20px;
         }
-
+        
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
-
+        
         @keyframes fadeIn {
             0% {
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             100% {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
+        
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
             }
-
             p {
                 font-size: 0.9rem;
             }
-
             button {
                 font-size: 0.9rem;
                 padding: 10px 15px;
@@ -140,7 +142,7 @@
         const user = JSON.parse(localStorage.getItem("user"));
         const studentName = user.name.replace(/\s+/g, "_");
 
-        fetch(`https://cpr-csr-managements-1.onrender.com/student-slots/${studentName}`)
+        fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/student-slots/${studentName}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch slots");
@@ -158,7 +160,10 @@
                 slots.forEach((slot) => {
                     const startDate = new Date(slot.start_time);
                     const date = startDate.toLocaleDateString();
-                    const time = startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const time = startDate.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
 
                     const slotCard = document.createElement("div");
                     slotCard.className = "slot-card";

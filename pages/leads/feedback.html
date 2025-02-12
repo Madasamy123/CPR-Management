@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,39 +10,52 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
+        
         .form-group {
             margin-bottom: 15px;
         }
+        
         label {
             display: block;
             margin-bottom: 5px;
         }
-        select, button {
+        
+        select,
+        button {
             width: 100%;
             padding: 10px;
             font-size: 16px;
         }
+        
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        table, th, td {
+        
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
-        th, td {
+        
+        th,
+        td {
             padding: 10px;
             text-align: left;
         }
+        
         th {
             background-color: #f4f4f4;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Feedback Viewer</h1>
@@ -77,7 +91,7 @@
             const section = document.getElementById('section').value;
 
             try {
-                const response = await fetch(`https://cpr-csr-managements-1.onrender.com/get-students/${section}`);
+                const response = await fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-students/${section}`);
                 if (response.ok) {
                     const data = await response.json();
                     const studentDropdown = document.getElementById('student');
@@ -105,7 +119,7 @@
             const studentEmail = document.getElementById('student').value;
 
             try {
-                const response = await fetch(`https://cpr-csr-managements-1.onrender.com/get-feedback/${studentEmail}`);
+                const response = await fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-feedback/${studentEmail}`);
                 if (response.ok) {
                     const data = await response.json();
                     const feedbackTable = document.getElementById('feedbackTable');
@@ -139,4 +153,5 @@
         }
     </script>
 </body>
+
 </html>

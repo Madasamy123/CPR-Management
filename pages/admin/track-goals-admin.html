@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
             background: linear-gradient(120deg, #84fab0, #8fd3f4);
             color: #333;
         }
-
+        
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -22,30 +23,33 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
-
-        h1, h2 {
+        
+        h1,
+        h2 {
             text-align: center;
             color: #333;
             margin-bottom: 20px;
         }
-
+        
         h1 {
             font-size: 2em;
             color: #007BFF;
         }
-
+        
         h2 {
             font-size: 1.5em;
             color: #555;
         }
-
+        
         label {
             display: block;
             font-weight: bold;
             margin: 10px 0 5px;
         }
-
-        input, select, button {
+        
+        input,
+        select,
+        button {
             width: 100%;
             padding: 12px;
             margin-bottom: 20px;
@@ -53,13 +57,14 @@
             border-radius: 8px;
             font-size: 1em;
         }
-
-        input:focus, select:focus {
+        
+        input:focus,
+        select:focus {
             border-color: #007BFF;
             outline: none;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
-
+        
         button {
             background-color: #007BFF;
             color: #fff;
@@ -68,12 +73,13 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
+        
         button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- <h1>Admin Dashboard</h1> -->
@@ -118,10 +124,9 @@
 
 
     <script>
-
-         // Get admin name from localStorage and set it in the 'From' input field
-         document.addEventListener('DOMContentLoaded', () => {
-            const adminName = JSON.parse(localStorage.getItem('user'))?.name || 'Unknown Admin';
+        // Get admin name from localStorage and set it in the 'From' input field
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminName = JSON.parse(localStorage.getItem('user')).name || 'Unknown Admin';
             document.getElementById('from-input').value = adminName;
         });
 
@@ -130,7 +135,7 @@
             alert('Goals submitted successfully!');
         });
 
-        const API_BASE_URL = 'https://cpr-csr-managements-1.onrender.com';
+        const API_BASE_URL = 'https://cpr-csr-managements-1-ve5s.onrender.com';
         const sectionSelect = JSON.parse(localStorage.getItem('user')).section;
         const monthSelect = document.getElementById('month-select');
         const fromInput = document.getElementById('from-input');
@@ -187,12 +192,19 @@
                 return;
             }
 
-            const goals = [
-                { label: 'English', goal: english },
-                { label: 'Life Skills', goal: lifeSkills },
-                { label: 'Tech', goal: tech },
-                { label: 'Problem Solving', goal: problemSolving },
-            ];
+            const goals = [{
+                label: 'English',
+                goal: english
+            }, {
+                label: 'Life Skills',
+                goal: lifeSkills
+            }, {
+                label: 'Tech',
+                goal: tech
+            }, {
+                label: 'Problem Solving',
+                goal: problemSolving
+            }, ];
 
             const payload = {
                 section,
@@ -237,9 +249,7 @@
             fetchSections();
             // populateMonths();
         });
-
-
-        
     </script>
 </body>
+
 </html>

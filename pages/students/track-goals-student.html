@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,7 @@
             background-color: #f0f8ff;
             color: #333;
         }
-
+        
         .container {
             max-width: 900px;
             margin: 50px auto;
@@ -21,19 +22,21 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        h1, h2 {
+        
+        h1,
+        h2 {
             text-align: center;
             color: #333;
             margin-bottom: 20px;
         }
-
+        
         h1 {
             font-size: 2.5rem;
             color: #007BFF;
         }
-
-        select, button {
+        
+        select,
+        button {
             width: 100%;
             padding: 12px 15px;
             margin: 15px 0;
@@ -44,12 +47,13 @@
             outline: none;
             transition: all 0.3s;
         }
-
-        select:focus, button:focus {
+        
+        select:focus,
+        button:focus {
             border-color: #007BFF;
             box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
         }
-
+        
         button {
             background: #007BFF;
             color: #fff;
@@ -57,11 +61,11 @@
             cursor: pointer;
             font-weight: bold;
         }
-
+        
         button:hover {
             background: #0056b3;
         }
-
+        
         .goal {
             background-color: #fdfdfd;
             margin: 15px 0;
@@ -70,24 +74,24 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
+        
         .goal .label {
             font-weight: bold;
             color: #007BFF;
         }
-
+        
         .goal .meta {
             font-size: 0.9rem;
             color: #666;
             margin-bottom: 10px;
         }
-
+        
         #goals-list p {
             text-align: center;
             font-size: 1.1rem;
             color: #888;
         }
-
+        
         footer {
             text-align: center;
             padding: 20px;
@@ -95,17 +99,18 @@
             color: #666;
             margin-top: 20px;
         }
-
+        
         footer a {
             color: #007BFF;
             text-decoration: none;
         }
-
+        
         footer a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Student Dashboard</h1>
@@ -142,7 +147,7 @@
         <p>&copy; 2025 Student Dashboard | Designed with ❤️ by <a href="#">You</a></p>
     </footer>
     <script>
-        const API_BASE_URL = 'https://cpr-csr-managements-1.onrender.com';
+        const API_BASE_URL = 'https://cpr-csr-managements-1-ve5s.onrender.com';
         const sectionSelect = JSON.parse(localStorage.getItem('user')).section;
         const monthSelect = document.getElementById('month-select');
         const goalsList = document.getElementById('goals-list');
@@ -253,12 +258,11 @@
         });
     </script>
 </body>
+
 </html>
 
 
-    
+
 </body>
+
 </html>
-
-
-   

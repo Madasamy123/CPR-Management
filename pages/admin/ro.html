@@ -7,12 +7,13 @@
     <title>Student Management</title>
     <style>
         /* General Reset */
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f9;
@@ -20,7 +21,7 @@
             padding: 20px;
             line-height: 1.6;
         }
-
+        
         header {
             text-align: center;
             background-color: #4CAF50;
@@ -28,7 +29,7 @@
             padding: 20px 10px;
             font-size: 1.8rem;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 20px auto;
@@ -37,7 +38,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
-
+        
         .controls {
             display: flex;
             justify-content: space-between;
@@ -46,13 +47,13 @@
             background: #f8f9fa;
             border-bottom: 1px solid #ddd;
         }
-
+        
         .controls label {
             font-size: 1rem;
             font-weight: bold;
             margin-right: 10px;
         }
-
+        
         .controls select {
             padding: 10px;
             font-size: 1rem;
@@ -60,27 +61,28 @@
             border-radius: 5px;
             outline: none;
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
-        th, td {
+        
+        th,
+        td {
             padding: 15px;
             text-align: center;
             border-bottom: 1px solid #ddd;
         }
-
+        
         th {
             background-color: #4CAF50;
             color: white;
         }
-
+        
         tr:hover {
             background-color: #f1f1f1;
         }
-
+        
         button {
             padding: 10px 15px;
             font-size: 1rem;
@@ -91,16 +93,16 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
+        
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
-
+        
         button:hover:not(:disabled) {
             background-color: #45a049;
         }
-
+        
         footer {
             text-align: center;
             padding: 10px;
@@ -110,7 +112,7 @@
         }
     </style>
     <script>
-        const fetchStudents = async () => {
+        const fetchStudents = async() => {
             const month = document.getElementById("monthSelect").value;
             const section = JSON.parse(localStorage.getItem("user")).section; // Fetch section from localStorage
             const tableBody = document.getElementById("studentTableBody");
@@ -123,7 +125,7 @@
 
             try {
                 const response = await fetch(
-                    `https://cpr-csr-managements-1.onrender.com/students/${month}?section=${section}`
+                    `https://cpr-csr-managements-1-ve5s.onrender.com/students/${month}?section=${section}`
                 );
                 if (!response.ok) throw new Error("Failed to fetch students");
 
@@ -157,12 +159,17 @@
             }
         };
 
-        const updateStatus = async (id, month, status) => {
+        const updateStatus = async(id, month, status) => {
             try {
-                const response = await fetch(`https://cpr-csr-managements-1.onrender.com/students/${month}/update`, {
+                const response = await fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/students/${month}/update`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ _id: id, status: status }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        _id: id,
+                        status: status
+                    }),
                 });
 
                 if (!response.ok) throw new Error("Failed to update status");

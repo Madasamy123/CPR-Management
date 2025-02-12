@@ -17,21 +17,21 @@
             justify-content: center;
             min-height: 100vh;
         }
-
+        
         h1 {
             font-size: 2.5rem;
             color: #4b6584;
             margin-bottom: 20px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
-
+        
         .controls {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-bottom: 20px;
         }
-
+        
         .controls button {
             background: linear-gradient(135deg, #4b79a1, #283e51);
             color: #fff;
@@ -44,12 +44,12 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
+        
         .controls button:hover {
             background: linear-gradient(135deg, #283e51, #4b79a1);
             transform: scale(1.05);
         }
-
+        
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -61,7 +61,7 @@
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-
+        
         .day {
             display: flex;
             align-items: center;
@@ -76,22 +76,22 @@
             cursor: pointer;
             box-shadow: inset 0 -3px 5px rgba(0, 0, 0, 0.05);
         }
-
+        
         .day:hover {
             background: #c0d6df;
             transform: translateY(-5px);
         }
-
+        
         .day.highlighted {
             background: #ffd700;
             color: #fff;
         }
-
+        
         .day.empty {
             background: transparent;
             cursor: default;
         }
-
+        
         .booking-form,
         #detailsContainer {
             display: none;
@@ -107,7 +107,7 @@
             max-width: 300px;
             width: 90%;
         }
-
+        
         .booking-form h2,
         #detailsContainer h2 {
             font-size: 1.5rem;
@@ -115,7 +115,7 @@
             text-align: center;
             margin-bottom: 15px;
         }
-
+        
         .booking-form input,
         .booking-form button,
         #detailsContainer button {
@@ -127,7 +127,7 @@
             border: 1px solid #ddd;
             outline: none;
         }
-
+        
         .booking-form button,
         #detailsContainer button {
             background: linear-gradient(135deg, #4b79a1, #283e51);
@@ -136,12 +136,12 @@
             cursor: pointer;
             border: none;
         }
-
+        
         .booking-form button:hover,
         #detailsContainer button:hover {
             background: linear-gradient(135deg, #283e51, #4b79a1);
         }
-
+        
         .close-button {
             background-color: red;
             color: white;
@@ -151,27 +151,24 @@
             cursor: pointer;
             border-radius: 10px;
         }
-
+        
         #detailsContainer p {
             margin: 5px 0;
             font-size: 1rem;
             color: #555;
         }
-
+        
         @media (max-width: 768px) {
             .calendar {
                 grid-template-columns: repeat(3, 1fr);
             }
-
             h1 {
                 font-size: 1.8rem;
             }
-
             .controls button {
                 padding: 8px 10px;
                 font-size: 0.9rem;
             }
-
             .day {
                 height: 80px;
                 font-size: 0.9rem;
@@ -229,7 +226,11 @@
         ];
 
         // User info
-        const user = JSON.parse(localStorage.getItem("user")) || { section: "A", role: "admin", name: "Admin" };
+        const user = JSON.parse(localStorage.getItem("user")) || {
+            section: "A",
+            role: "admin",
+            name: "Admin"
+        };
         sectionSelect.value = user.section || "A";
 
         // Event Listeners
@@ -280,7 +281,7 @@
             }
 
             // Fetch and highlight events
-            fetch(`https://cpr-csr-managements-1.onrender.com/get-events-${user.section}`)
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${user.section}`)
                 .then(res => res.json())
                 .then(events => {
                     events.forEach(event => {
@@ -326,18 +327,20 @@
                 return;
             }
 
-            fetch(`https://cpr-csr-managements-1.onrender.com/book-slot-${user.section}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    date,
-                    time: slotTime,
-                    admin: user.name,
-                    student: studentName,
-                    role: user.role,
-                    section: user.section,
-                }),
-            })
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/book-slot-${user.section}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        date,
+                        time: slotTime,
+                        admin: user.name,
+                        student: studentName,
+                        role: user.role,
+                        section: user.section,
+                    }),
+                })
                 .then(res => res.json())
                 .then(data => {
                     alert(data.message || data.error);
@@ -349,7 +352,7 @@
 
         // Open booking details
         function openBookingDetails(slotId) {
-            fetch(`https://cpr-csr-managements-1.onrender.com/slot-details/${user.section}/${slotId}`)
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/slot-details/${user.section}/${slotId}`)
                 .then(res => res.json())
                 .then(data => {
                     const detailsContainer = document.getElementById("detailsContainer");
@@ -370,7 +373,9 @@
 
         // Delete slot
         function deleteSlot(slotId) {
-            fetch(`https://cpr-csr-managements-1.onrender.com/delete-slot/${user.section}/${slotId}`, { method: "DELETE" })
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/delete-slot/${user.section}/${slotId}`, {
+                    method: "DELETE"
+                })
                 .then(res => res.json())
                 .then(data => {
                     alert(data.message || data.error);

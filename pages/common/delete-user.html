@@ -7,12 +7,13 @@
     <title>Delete User</title>
     <style>
         /* Global reset */
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f7f7f7;
@@ -23,7 +24,7 @@
             height: 100vh;
             margin: 0;
         }
-
+        
         .container {
             background-color: white;
             padding: 30px;
@@ -32,18 +33,18 @@
             width: 100%;
             max-width: 400px;
         }
-
+        
         h2 {
             text-align: center;
             color: #333;
             font-size: 24px;
             margin-bottom: 20px;
         }
-
+        
         .form-group {
             margin-bottom: 20px;
         }
-
+        
         label {
             display: block;
             font-size: 14px;
@@ -51,7 +52,7 @@
             color: #555;
             margin-bottom: 5px;
         }
-
+        
         input,
         button {
             width: 100%;
@@ -61,13 +62,13 @@
             border-radius: 5px;
             font-size: 14px;
         }
-
+        
         input:focus,
         button:focus {
             border-color: #e74c3c;
             outline: none;
         }
-
+        
         button {
             background-color: #e74c3c;
             color: white;
@@ -76,35 +77,33 @@
             border: none;
             transition: background-color 0.3s;
         }
-
+        
         button:hover {
             background-color: #c0392b;
         }
-
+        
         .error-message,
         .success-message {
             font-size: 14px;
             text-align: center;
             margin-top: 15px;
         }
-
+        
         .error-message {
             color: #e74c3c;
         }
-
+        
         .success-message {
             color: #2ecc71;
         }
-
+        
         @media (max-width: 480px) {
             .container {
                 padding: 20px;
             }
-
             h2 {
                 font-size: 20px;
             }
-
             button {
                 padding: 14px;
             }
@@ -129,17 +128,19 @@
     </div>
 
     <script>
-        document.getElementById("deleteUserForm").addEventListener("submit", async function (event) {
+        document.getElementById("deleteUserForm").addEventListener("submit", async function(event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value;
 
-            const response = await fetch('https://cpr-csr-managements.onrender.com/delete_user', {
+            const response = await fetch('https://cpr-csr-managements-7e67.onrender.com/delete_user', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({
+                    email
+                })
             });
 
             const data = await response.json();
