@@ -13,6 +13,27 @@
             background-color: #f9f9f9;
         }
         
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        /* Position the span in the top-right of the header */
+        .header .booking-message {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            font-weight: normal;
+            color: yellow;
+        }
+        
         .container {
             max-width: 900px;
             margin: 50px auto;
@@ -31,17 +52,19 @@
         .calendar {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
+            gap: 15px;
             margin: 20px 0;
         }
         
         .calendar-date {
-            padding: 10px;
+            padding: 15px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #f0f0f0;
             cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
         }
         
         .calendar-date.booked {
@@ -104,14 +127,12 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>Meetup Slot Booking</h1>
-        <h2>Select a Section</h2>
-        <select id="sectionSelect" disabled>
-            <option value="A">Section A</option>
-            <option value="B">Section B</option>
-        </select>
+    <div class="header">
+        Meetup Slot Booking
+        <span id="bookingMessage" class="booking-message"></span>
+    </div>
 
+    <div class="container">
         <h2>Select a Date</h2>
         <div id="calendar" class="calendar"></div>
 
@@ -125,7 +146,6 @@
             <form id="bookingForm">
                 <input type="hidden" id="selectedDate">
                 <input type="hidden" id="selectedSlot">
-                <input type="hidden" id="selectedSection">
                 <label for="studentId">Enter Your Student ID:</label>
                 <input type="text" id="studentId" required>
                 <button type="submit">Book Slot</button>
@@ -134,21 +154,33 @@
     </div>
 
     <script>
-        const apiUrl = "https://cpr-csr-managements-meets-kca5.onrender.com"; // Adjust if backend is hosted elsewhere
+        const apiUrl = "https://cpr-csr-managements-meets-kca5.onrender.com";
+        const user = JSON.parse(localStorage.getItem("user")) || {};
+        
+        const sectionSelect = user ? user.section : null;
+        const studentId = user ? user.name : "";
 
-        const sectionSelect = JSON.parse(localStorage.getItem("user")).section;
         const calendarElement = document.getElementById("calendar");
         const slotsContainer = document.getElementById("slots-container");
         const slotsElement = document.getElementById("slots");
         const bookingContainer = document.getElementById("booking-container");
         const bookingForm = document.getElementById("bookingForm");
+        const bookingMessage = document.getElementById("bookingMessage");
 
-        // Fetch calendar data based on section
+
+        // Prefill Student ID from local storage
+        document.getElementById("studentId").value = studentId || "";
+       
+        
+
+
+
+
         function fetchCalendar(sectionSelect) {
             fetch(`${apiUrl}/calendar/${sectionSelect}`)
                 .then(response => response.json())
                 .then(data => {
-                    calendarElement.innerHTML = ""; // Clear previous calendar
+                    calendarElement.innerHTML = "";
                     data.calendar.forEach(date => {
                         const dateDiv = document.createElement("div");
                         dateDiv.className = `calendar-date ${date.fully_booked ? "booked" : "available"}`;
@@ -165,12 +197,11 @@
                 .catch(error => console.error("Failed to load calendar:", error));
         }
 
-        // Fetch available slots for a selected date and section
         function fetchSlots(sectionSelect, date) {
             fetch(`${apiUrl}/slots/${sectionSelect}/${date}`)
                 .then(response => response.json())
                 .then(data => {
-                    slotsElement.innerHTML = ""; // Clear previous slots
+                    slotsElement.innerHTML = "";
                     data.slots.forEach(slot => {
                         const slotDiv = document.createElement("div");
                         slotDiv.className = `slot ${slot.booked ? "booked" : "available"}`;
@@ -187,48 +218,40 @@
                 .catch(error => console.error("Failed to load slots:", error));
         }
 
-        // Show the booking form
         function showBookingForm(sectionSelect, date, slot) {
             document.getElementById("selectedDate").value = date;
             document.getElementById("selectedSlot").value = slot;
-            document.getElementById("selectedSection").value = sectionSelect;
             bookingContainer.classList.remove("hidden");
         }
 
-        // Submit booking form
         bookingForm.addEventListener("submit", event => {
             event.preventDefault();
-
             const bookingData = {
                 date: document.getElementById("selectedDate").value,
                 time: document.getElementById("selectedSlot").value,
                 student_id: document.getElementById("studentId").value,
-                section: JSON.parse(localStorage.getItem("user")).section || "B"
+                section: sectionSelect
             };
 
             fetch(`${apiUrl}/book_slot`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(bookingData)
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message || "Slot booked successfully!");
-                    // After booking, fetch the updated slots (including booked slots)
-                    fetchSlots(bookingData.sectionSelect, bookingData.date);
+                    bookingMessage.textContent = data.message || "Slot booked successfully!";
+                    bookingMessage.style.color = "yellow"; 
+                    fetchSlots(bookingData.section, bookingData.date);
                 })
                 .catch(error => console.error("Failed to book slot:", error));
         });
 
-        // Load the calendar when the page loads for the selected section
-        //sectionSelect.addEventListener("change", (event) => {
-        //  fetchCalendar(event.target.value);
-        //});
-
-        // Initialize with the default sectiona 
-        fetchCalendar(sectionSelect);
+        if (sectionSelect) {
+            fetchCalendar(sectionSelect);
+        } else {
+            console.error("No section found in localStorage");
+        }
     </script>
 </body>
 

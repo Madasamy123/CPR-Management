@@ -13,7 +13,18 @@
             background-color: #f0f8ff;
             color: #333;
         }
+
+        .header{
+            background-color:#007BFF;
+            height: 80px;
+           
+        }
+        .header h1{
+            color: #f9f9f9;
+            font-size: 30px;
+           text-align: center;
         
+        }
         .container {
             max-width: 900px;
             margin: 50px auto;
@@ -112,8 +123,14 @@
 </head>
 
 <body>
+    <div class="header">
+ 
+
+    <h1>Students Goals</h1>
+
+    </div>
     <div class="container">
-        <h1>Student Dashboard</h1>
+        <!-- <h1>Student Dashboard</h1> -->
         <h2>Welcome, <span id="student-name-display"></span></h2>
 
         <!-- <label for="section-select">Select Section:</label>
@@ -149,13 +166,16 @@
     <script>
         const API_BASE_URL = 'https://cpr-csr-managements-1-ve5s.onrender.com';
         const sectionSelect = JSON.parse(localStorage.getItem('user')).section;
+      
         const monthSelect = document.getElementById('month-select');
         const goalsList = document.getElementById('goals-list');
         const fetchGoalsBtn = document.getElementById('fetch-goals-btn');
-        const studentNameDisplay = JSON.parse(localStorage.getItem('user')).name;
+        const studentNameDisplay = document.getElementById('student-name-display')
+        
 
         // Fetch student name from localStorage
         const studentName = JSON.parse(localStorage.getItem('user')).name;
+        console.log(studentName)
         if (!studentName) {
             alert("No student name found in localStorage! Please set your name.");
             window.location.reload();
