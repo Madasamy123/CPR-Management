@@ -126,14 +126,14 @@
     <script>
         // Get admin name from localStorage and set it in the 'From' input field
         document.addEventListener('DOMContentLoaded', () => {
-            const adminName = JSON.parse(localStorage.getItem('user')).name || 'Unknown Admin';
-            document.getElementById('from-input').value = adminName;
-        });
+    const adminName = JSON.parse(localStorage.getItem('user')).name || 'Unknown Admin';
+    document.getElementById('from-input').value = adminName;
 
-        const submitGoalsButton = document.getElementById('submit-goals-btn');
-        submitGoalsBtn.addEventListener('click', () => {
-            alert('Goals submitted successfully!');
-        });
+    const submitGoalsBtn = document.getElementById('submit-goals-btn'); 
+    submitGoalsBtn.addEventListener('click', submitGoals);
+
+    fetchSections(); 
+});
 
         const API_BASE_URL = 'https://cpr-csr-managements-1-ve5s.onrender.com';
         const sectionSelect = JSON.parse(localStorage.getItem('user')).section;

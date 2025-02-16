@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slot Booking</title>
+    
     <style>
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -21,6 +23,7 @@
             font-size: 24px;
             font-weight: bold;
             position: relative;
+            height: 60px;
         }
 
         /* Position the span in the top-right of the header */
@@ -123,12 +126,56 @@
             background-color: gray;
             cursor: not-allowed;
         }
+
+        .loading-spinner{
+            display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        margin-left: 400px;
+
+        }
+
+        .loading-spinner div {
+        width: 12px;
+        height: 12px;
+        margin: 0 5px;
+        border-radius: 50%;
+        background-color: gray;
+        animation: bounce 1.5s infinite ease-in-out;
+    }
+
+    .loading-spinner div:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .loading-spinner div:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .loading-spinner div:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes bounce {
+        0%, 80%, 100% {
+            transform: scale(0);
+        }
+        40% {
+            transform: scale(1);
+        }
+    }
+
+
+
+
     </style>
 </head>
 
 <body>
     <div class="header">
-        Meetup Slot Booking
+
+        <h3>Meetup Slot Booking</h3>
         <span id="bookingMessage" class="booking-message"></span>
     </div>
 
@@ -155,103 +202,125 @@
 
     <script>
         const apiUrl = "https://cpr-csr-managements-meets-kca5.onrender.com";
-        const user = JSON.parse(localStorage.getItem("user")) || {};
-        
-        const sectionSelect = user ? user.section : null;
-        const studentId = user ? user.name : "";
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+    
+    const sectionSelect = user ? user.section : null;
+    const studentId = user ? user.name : "";
 
-        const calendarElement = document.getElementById("calendar");
-        const slotsContainer = document.getElementById("slots-container");
-        const slotsElement = document.getElementById("slots");
-        const bookingContainer = document.getElementById("booking-container");
-        const bookingForm = document.getElementById("bookingForm");
-        const bookingMessage = document.getElementById("bookingMessage");
+    const calendarElement = document.getElementById("calendar");
+    const slotsContainer = document.getElementById("slots-container");
+    const slotsElement = document.getElementById("slots");
+    const bookingContainer = document.getElementById("booking-container");
+    const bookingForm = document.getElementById("bookingForm");
+    const bookingMessage = document.getElementById("bookingMessage");
 
+    let selectedDate = null;
+    let selectedSlot = null;
 
-        // Prefill Student ID from local storage
-        document.getElementById("studentId").value = studentId || "";
-       
-        
+    // Prefill Student ID
+    document.getElementById("studentId").value = studentId || "";
 
+    function showLoadingSpinner(element) {
+        element.innerHTML = `
+            <div class="loading-spinner">
+                <div></div><div></div><div></div>
+            </div>`;
+    }
 
+    function fetchCalendar(sectionSelect) {
+        showLoadingSpinner(calendarElement);
 
+        fetch(`${apiUrl}/calendar/${sectionSelect}`)
+            .then(response => response.json())
+            .then(data => {
+                calendarElement.innerHTML = "";
+                data.calendar.forEach(date => {
+                    const dateDiv = document.createElement("div");
+                    dateDiv.className = `calendar-date ${date.fully_booked ? "booked" : "available"}`;
+                    dateDiv.innerText = new Date(date.date).toDateString();
+                    dateDiv.dataset.date = date.date;
 
-        function fetchCalendar(sectionSelect) {
-            fetch(`${apiUrl}/calendar/${sectionSelect}`)
-                .then(response => response.json())
-                .then(data => {
-                    calendarElement.innerHTML = "";
-                    data.calendar.forEach(date => {
-                        const dateDiv = document.createElement("div");
-                        dateDiv.className = `calendar-date ${date.fully_booked ? "booked" : "available"}`;
-                        dateDiv.innerText = new Date(date.date).toDateString();
-                        dateDiv.dataset.date = date.date;
+                    if (!date.fully_booked) {
+                        dateDiv.addEventListener("click", () => selectDate(dateDiv, sectionSelect));
+                    }
 
-                        if (!date.fully_booked) {
-                            dateDiv.addEventListener("click", () => fetchSlots(sectionSelect, date.date));
-                        }
+                    calendarElement.appendChild(dateDiv);
+                });
+            })
+            .catch(error => console.error("Failed to load calendar:", error));
+    }
 
-                        calendarElement.appendChild(dateDiv);
-                    });
-                })
-                .catch(error => console.error("Failed to load calendar:", error));
-        }
+    function selectDate(dateDiv, sectionSelect) {
+        if (selectedDate) selectedDate.style.border = "none";
 
-        function fetchSlots(sectionSelect, date) {
-            fetch(`${apiUrl}/slots/${sectionSelect}/${date}`)
-                .then(response => response.json())
-                .then(data => {
-                    slotsElement.innerHTML = "";
-                    data.slots.forEach(slot => {
-                        const slotDiv = document.createElement("div");
-                        slotDiv.className = `slot ${slot.booked ? "booked" : "available"}`;
-                        slotDiv.innerText = slot.time;
+        selectedDate = dateDiv;
+        selectedDate.style.border = "3px solid green";
 
-                        if (!slot.booked) {
-                            slotDiv.addEventListener("click", () => showBookingForm(sectionSelect, date, slot.time));
-                        }
+        fetchSlots(sectionSelect, dateDiv.dataset.date);
+    }
 
-                        slotsElement.appendChild(slotDiv);
-                    });
-                    slotsContainer.classList.remove("hidden");
-                })
-                .catch(error => console.error("Failed to load slots:", error));
-        }
+    function fetchSlots(sectionSelect, date) {
+        showLoadingSpinner(slotsElement);
 
-        function showBookingForm(sectionSelect, date, slot) {
-            document.getElementById("selectedDate").value = date;
-            document.getElementById("selectedSlot").value = slot;
-            bookingContainer.classList.remove("hidden");
-        }
+        fetch(`${apiUrl}/slots/${sectionSelect}/${date}`)
+            .then(response => response.json())
+            .then(data => {
+                slotsElement.innerHTML = "";
+                data.slots.forEach(slot => {
+                    const slotDiv = document.createElement("div");
+                    slotDiv.className = `slot ${slot.booked ? "booked" : "available"}`;
+                    slotDiv.innerText = slot.time;
 
-        bookingForm.addEventListener("submit", event => {
-            event.preventDefault();
-            const bookingData = {
-                date: document.getElementById("selectedDate").value,
-                time: document.getElementById("selectedSlot").value,
-                student_id: document.getElementById("studentId").value,
-                section: sectionSelect
-            };
+                    if (!slot.booked) {
+                        slotDiv.addEventListener("click", () => selectSlot(slotDiv, date, slot.time));
+                    }
 
-            fetch(`${apiUrl}/book_slot`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(bookingData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    bookingMessage.textContent = data.message || "Slot booked successfully!";
-                    bookingMessage.style.color = "yellow"; 
-                    fetchSlots(bookingData.section, bookingData.date);
-                })
-                .catch(error => console.error("Failed to book slot:", error));
-        });
+                    slotsElement.appendChild(slotDiv);
+                });
+                slotsContainer.classList.remove("hidden");
+            })
+            .catch(error => console.error("Failed to load slots:", error));
+    }
 
-        if (sectionSelect) {
-            fetchCalendar(sectionSelect);
-        } else {
-            console.error("No section found in localStorage");
-        }
+    function selectSlot(slotDiv, date, slot) {
+        if (selectedSlot) selectedSlot.style.border = "none";
+
+        selectedSlot = slotDiv;
+        selectedSlot.style.border = "3px solid green";
+
+        document.getElementById("selectedDate").value = date;
+        document.getElementById("selectedSlot").value = slot;
+        bookingContainer.classList.remove("hidden");
+    }
+
+    bookingForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const bookingData = {
+            date: document.getElementById("selectedDate").value,
+            time: document.getElementById("selectedSlot").value,
+            student_id: document.getElementById("studentId").value,
+            section: sectionSelect
+        };
+
+        fetch(`${apiUrl}/book_slot`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                bookingMessage.textContent = data.message || "Slot booked successfully!";
+                bookingMessage.style.color = "yellow"; 
+                fetchSlots(bookingData.section, bookingData.date);
+            })
+            .catch(error => console.error("Failed to book slot:", error));
+    });
+
+    if (sectionSelect) {
+        fetchCalendar(sectionSelect);
+    } else {
+        console.error("No section found in localStorage");
+    }
     </script>
 </body>
 

@@ -11,12 +11,12 @@
             margin: 0;
             padding: 0;
             background-color: #f0f8ff;
-            /* Gradient background */
+            /* Light background */
             color: #ffffff;
             text-align: center;
             min-height: 100vh;
         }
-        
+
         h1 {
             color: #ffffff;
             background: linear-gradient(135deg, #6a11cb, #2575fc);
@@ -26,14 +26,14 @@
             font-size: 2.5em;
             border-bottom: 5px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         ul.feedback-list {
             margin: 20px auto;
             padding: 0;
             list-style: none;
             max-width: 700px;
         }
-        
+
         ul.feedback-list li {
             background: linear-gradient(135deg, #11998e, #38ef7d);
             /* Soft gradient card */
@@ -44,104 +44,113 @@
             text-align: left;
             color: #ffffff;
         }
-        
+
         .feedback-item .date {
             font-size: 0.85em;
             color: #c7ecee;
             margin-bottom: 5px;
             display: block;
         }
-        
+
         .feedback-item .content {
             font-size: 1em;
             color: #ffffff;
         }
-        /* #logoutBtn {
-            background: linear-gradient(135deg, #ff6a00, #ee0979); 
-            color: #ffffff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-size: 1em;
-            cursor: pointer;
-            margin: 30px auto;
-            display: inline-block;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none;
+
+        /* Loading Animation */
+        #loadingMessage {
+            margin-top: 50px;
+            font-size: 1.5em;
+            color: red;
+            animation: blink 1.5s infinite;
         }
 
-        #logoutBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 105, 135, 0.3);
-        } */
-        
+        @keyframes blink {
+            50% {
+                opacity: 0.5;
+            }
+        }
+
         footer {
             margin-top: 40px;
             font-size: 0.9em;
             color: rgba(255, 255, 255, 0.8);
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", async() => {
-            const studentData = JSON.parse(localStorage.getItem("user"));
-
-            if (!studentData || studentData.role !== "Student") {
-                alert("Unauthorized access! Redirecting to login page.");
-                window.location.href = "../login.html";
-            } else {
-                const email = studentData.email;
-
-                const fetchFeedback = async() => {
-                    try {
-                        const response = await fetch("https://cpr-csr-managements-7e67.onrender.com/get-feedbacks", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                email
-                            })
-                        });
-
-                        if (response.ok) {
-                            const feedbacks = await response.json();
-                            document.getElementById("feedbacksList").innerHTML = feedbacks.map(feedback => `
-                                <li>
-                                    <div class="feedback-item">
-                                        <span class="date">${feedback.timestamp}</span>
-                                        <span class="content">${feedback.textcontent} (From: ${feedback.from})</span>
-                                    </div>
-                                </li>
-                            `).join('');
-                        } else {
-                            const error = await response.json();
-                            alert(error.error || 'Failed to load feedbacks');
-                        }
-                    } catch (error) {
-                        console.error("Error fetching feedbacks:", error);
-                        alert("Error fetching feedbacks. Please try again later.");
-                    }
-                };
-
-                await fetchFeedback();
-                setInterval(fetchFeedback, 3000);
-            }
-
-            document.getElementById("logoutBtn").addEventListener("click", () => {
-                localStorage.removeItem("user");
-                window.location.href = "/index.html";
-            });
-        });
-    </script>
 </head>
 
 <body>
     <h1>Student Feedback Dashboard</h1>
+
+    <!-- Loading Message -->
+    <div id="loadingMessage">Loading feedbacks...</div>
+
+    <!-- Feedback List -->
     <ul id="feedbacksList" class="feedback-list"></ul>
-    <!-- <button id="logoutBtn">Logout</button> -->
+
     <footer>
         &copy; 2024 Admin Dashboard. All Rights Reserved.
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Get student data from localStorage
+            const studentData = JSON.parse(localStorage.getItem("user"));
+
+            // Redirect if unauthorized
+            if (!studentData || studentData.role !== "Student") {
+                alert("Unauthorized access! Redirecting to login page.");
+                window.location.href = "../login.html";
+                return;
+            }
+
+            const email = studentData.email;
+            const loadingMessage = document.getElementById("loadingMessage");
+            const feedbacksList = document.getElementById("feedbacksList");
+
+            // Function to fetch and display feedback
+            const fetchFeedback = async () => {
+                loadingMessage.style.display = "block"; // Show loading indicator
+
+                try {
+                    const response = await fetch("https://cpr-csr-managements-7e67.onrender.com/get-feedbacks", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email })
+                    });
+
+                    if (response.ok) {
+                        const feedbacks = await response.json();
+
+                        if (feedbacks.length === 0) {
+                            feedbacksList.innerHTML = "<li>No feedbacks available.</li>";
+                        } else {
+                            feedbacksList.innerHTML = feedbacks.map(feedback => `
+                                <li>
+                                    <div class="feedback-item">
+                                        <span class="date">${new Date(feedback.timestamp).toLocaleString()}</span>
+                                        <span class="content">${feedback.textcontent} (From: ${feedback.from})</span>
+                                    </div>
+                                </li>
+                            `).join('');
+                        }
+                    } else {
+                        feedbacksList.innerHTML = "<li>Error loading feedbacks.</li>";
+                    }
+                } catch (error) {
+                    console.error("Error fetching feedbacks:", error);
+                    feedbacksList.innerHTML = "<li>Failed to fetch feedbacks. Please try again later.</li>";
+                }
+
+                loadingMessage.style.display = "none"; // Hide loading indicator
+            };
+
+            // Initial fetch and refresh every 3 seconds
+            await fetchFeedback();
+            // setInterval(fetchFeedback, 3000);
+        });
+    </script>
+
 </body>
 
 </html>
