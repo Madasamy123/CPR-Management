@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <title>Slot Booking</title>
     
     <style>
@@ -24,6 +25,10 @@
             font-weight: bold;
             position: relative;
             height: 60px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+           
         }
 
         /* Position the span in the top-right of the header */
@@ -145,6 +150,11 @@
         animation: bounce 1.5s infinite ease-in-out;
     }
 
+
+    #bookingForm{
+        margin-left: 200px;
+    }
+
     .loading-spinner div:nth-child(1) {
         animation-delay: 0s;
     }
@@ -167,6 +177,21 @@
     }
 
 
+    .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+    }
+    /* .header>.head{
+        display: flex;
+        justify-content: space-evenly;
+
+    } */
+
+
+
+
+
 
 
     </style>
@@ -174,9 +199,17 @@
 
 <body>
     <div class="header">
+       
+                <a href="/pages/students/students.html"><i class="fa-solid fa-arrow-left"></i></a>
+          
+            <h3>Meetup Slot Booking</h3>
+          
+            <div> <span id="bookingMessage" class="booking-message"></span></div>
+           
 
-        <h3>Meetup Slot Booking</h3>
-        <span id="bookingMessage" class="booking-message"></span>
+       
+        
+      
     </div>
 
     <div class="container">
@@ -205,7 +238,9 @@
     const user = JSON.parse(localStorage.getItem("user")) || {};
     
     const sectionSelect = user ? user.section : null;
-    const studentId = user ? user.name : "";
+    const studentId = user ? user.email : "";
+
+    console.log(studentId)
 
     const calendarElement = document.getElementById("calendar");
     const slotsContainer = document.getElementById("slots-container");

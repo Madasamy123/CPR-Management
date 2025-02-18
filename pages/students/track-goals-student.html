@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <title>Student Dashboard</title>
     <style>
         body {
@@ -15,6 +16,8 @@
         }
 
         .header{
+            display: flex;
+            justify-content: space-between;
             background-color:burlywood;
             height: 80px;
            
@@ -119,14 +122,28 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+        margin-left: 20px;
+    }
+
+
+
+
+
     </style>
 </head>
 
 <body>
     <div class="header">
- 
 
+      
+    <a href="/pages/students/students.html"><i class="fa-solid fa-arrow-left"></i></a>
     <h1>Students Goals</h1>
+    <div></div>
 
     </div>
     <div class="container">

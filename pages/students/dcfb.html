@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <title>Admin Feedback Dashboard</title>
     <style>
         body {
@@ -17,14 +18,30 @@
             min-height: 100vh;
         }
 
-        h1 {
+        header {
             color: #ffffff;
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             /* Gradient header */
             padding: 20px;
             margin: 0;
-            font-size: 2.5em;
+           
             border-bottom: 5px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        
+        .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+        margin-left: 20px;
+    }
+
+
+        header h1{
+            font-size: 1.5rem;
         }
 
         ul.feedback-list {
@@ -80,7 +97,12 @@
 </head>
 
 <body>
-    <h1>Student Feedback Dashboard</h1>
+    <header>
+        <a href="/pages/students/students.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1>Student Feedback Dashboard</h1>
+        <div></div>
+    </header>
+    
 
     <!-- Loading Message -->
     <div id="loadingMessage">Loading feedbacks...</div>

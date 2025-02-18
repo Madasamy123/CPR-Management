@@ -4,18 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <title>Dynamic Calendar with Slot Booking</title>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom right, #eef2f3, #8e9eab);
+            min-height: 100vh;
             margin: 0;
             padding: 0;
+          
+        }
+
+        .main_content{
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+           
+
         }
         
         h1 {
@@ -157,6 +164,18 @@
             font-size: 1rem;
             color: #555;
         }
+
+        header{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+        margin-left: 20px;
+    }
         
         @media (max-width: 768px) {
             .calendar {
@@ -178,30 +197,39 @@
 </head>
 
 <body>
-    <h1 id="monthDisplay">January 2024</h1>
-    <div class="controls">
-        <button id="prevMonth">Previous Month</button>
-        <button id="nextMonth">Next Month</button>
-    </div>
-    <div class="calendar" id="calendar"></div>
+    <header>
+        <a href="/pages/admin/admin.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <div></div>
+    </header>
 
-    <div id="booking-form" class="booking-form">
-        <h2>Book Slot</h2>
-        <p id="selectedDate"></p>
-        <input type="time" id="slotTime" placeholder="Enter Time" />
-        <input type="text" id="studentName" placeholder="Enter Student Name" />
-        <button id="bookButton">Book Slot</button>
-        <button onclick="closeBookingForm()">Cancel</button>
-    </div>
+    <div class="main_content">
+        <h1 id="monthDisplay">January 2024</h1>
+        <div class="controls">
+            <button id="prevMonth">Previous Month</button>
+            <button id="nextMonth">Next Month</button>
+        </div>
+        <div class="calendar" id="calendar"></div>
+    
+        <div id="booking-form" class="booking-form">
+            <h2>Book Slot</h2>
+            <p id="selectedDate"></p>
+            <input type="time" id="slotTime" placeholder="Enter Time" />
+            <input type="text" id="studentName" placeholder="Enter Student Name" />
+            <button id="bookButton">Book Slot</button>
+            <button onclick="closeBookingForm()">Cancel</button>
+        </div>
+    
+        <div id="detailsContainer">
+            <h2>Slot Details</h2>
+            <p id="adminName"></p>
+            <p id="studentNameDetails"></p>
+            <p id="bookingDate"></p>
+            <button id="deleteButton">Delete Slot</button>
+            <button onclick="closeDetails()">Close</button>
+        </div>
 
-    <div id="detailsContainer">
-        <h2>Slot Details</h2>
-        <p id="adminName"></p>
-        <p id="studentNameDetails"></p>
-        <p id="bookingDate"></p>
-        <button id="deleteButton">Delete Slot</button>
-        <button onclick="closeDetails()">Close</button>
     </div>
+   
 
     <script>
         const calendar = document.getElementById("calendar");

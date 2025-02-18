@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <title>Student Slot Requests</title>
     <style>
         body {
@@ -25,6 +26,10 @@
             padding: 15px 0;
             font-size: 1.5rem;
             font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+          height: 60px;
+
         }
         
         .container {
@@ -97,6 +102,17 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
+
+
+        .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+        margin-left: 20px;
+    }
+
+
+
         
         @keyframes fadeIn {
             0% {
@@ -126,10 +142,13 @@
 
 <body>
     <header>
-       MEET YOU COACHES
+        <a href="/pages/students/students.html"><i class="fa-solid fa-arrow-left"></i></a>
+       <h3> MEET YOU COACHES</h3>
+       <div></div>
     </header>
 
     <div class="container">
+        
         <h1>Message Feed</h1>
         <div id="slotContainer"></div>
         <p id="errorMessage" class="error-message"></p>
