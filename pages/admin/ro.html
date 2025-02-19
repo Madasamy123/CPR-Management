@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <title>Student Management</title>
     <style>
         /* General Reset */
@@ -28,6 +29,11 @@
             color: white;
             padding: 20px 10px;
             font-size: 1.8rem;
+            
+            display: flex;
+            justify-content: space-between;
+           
+        
         }
         
         .container {
@@ -110,54 +116,67 @@
             color: #666;
             margin-top: 20px;
         }
+
+        .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+        margin-left: 20px;
+    }
+
+
     </style>
     <script>
-        const fetchStudents = async() => {
-            const month = document.getElementById("monthSelect").value;
-            const section = JSON.parse(localStorage.getItem("user")).section; // Fetch section from localStorage
-            const tableBody = document.getElementById("studentTableBody");
-            tableBody.innerHTML = "";
+       const fetchStudents = async () => {
+    const month = document.getElementById("monthSelect").value;
+    const section = JSON.parse(localStorage.getItem("user")).section; // Fetch section from localStorage
+    const tableBody = document.getElementById("studentTableBody");
+    tableBody.innerHTML = "";
 
-            if (!section) {
-                alert("Please set a section in localStorage before proceeding!");
-                return;
-            }
+    if (!section) {
+        alert("Please set a section in localStorage before proceeding!");
+        return;
+    }
 
-            try {
-                const response = await fetch(
-                    `https://cpr-csr-managements-1-ve5s.onrender.com/students/${month}?section=${section}`
-                );
-                if (!response.ok) throw new Error("Failed to fetch students");
+    try {
+        const response = await fetch(
+            `https://cpr-csr-managements-1-ve5s.onrender.com/students/${month}?section=${section}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch students");
 
-                const students = await response.json();
-                if (students.length === 0) {
-                    tableBody.innerHTML = "<tr><td colspan='4'>No students found for the selected month and section.</td></tr>";
-                } else {
-                    students.forEach(student => {
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${student.name}</td>
-                            <td>${student.email}</td>
-                            <td>
-                                <select onchange="updateStatus('${student._id}', '${month}', this.value)">
-                                    <option value="Not Completed" ${student.status === 'Not Completed' ? 'selected' : ''}>Not Completed</option>
-                                    <option value="Ongoing" ${student.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
-                                    <option value="Completed" ${student.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                </select>
-                            </td>
-                            <td>
-                                <button onclick="updateStatus('${student._id}', '${month}', document.getElementById('status-${student._id}').value)">
-                                    Update Status
-                                </button>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching students:", error);
-            }
-        };
+        const students = await response.json();
+        if (students.length === 0) {
+            tableBody.innerHTML = "<tr><td colspan='4'>No students found for the selected month and section.</td></tr>";
+        } else {
+            students.forEach(student => {
+                const statusColor =
+                    student.status === "Not Completed" ? "red" :
+                    student.status === "Ongoing" ? "yellow" :
+                    student.status === "Completed" ? "green" : "grey";
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.email}</td>
+                    <td style="background-color: ${statusColor}; color: ${statusColor === 'yellow' ? 'black' : 'white'}; font-weight: bold;">
+                        ${student.status}
+                    </td>
+                    <td>
+                        <select onchange="updateStatus('${student._id}', '${month}', this.value)">
+                            <option value="Not Completed" ${student.status === 'Not Completed' ? 'selected' : ''}>Not Completed</option>
+                            <option value="Ongoing" ${student.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
+                            <option value="Completed" ${student.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                        </select>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching students:", error);
+    }
+};
+
 
         const updateStatus = async(id, month, status) => {
             try {
@@ -187,7 +206,9 @@
 
 <body>
     <header>
-        Student Management System
+        <a href="/pages/admin/admin.html"><i class="fa-solid fa-arrow-left"></i></a>
+       <h3>Student Management System</h3>
+       <div></div> 
     </header>
 
     <div class="container">

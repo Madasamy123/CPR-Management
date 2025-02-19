@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <title>Slot Booking System</title>
     <style>
         body {
@@ -104,20 +105,81 @@
             background-color: gray;
             cursor: not-allowed;
         }
+
+        header {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            /* padding: 20px 10px; */
+            /* font-size: 1.8rem; */
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+           
+        
+        }
+
+        .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+        margin-left: 20px;
+    }
+
+    #loading{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color:rgba(255, 255, 255, 0.8);
+        display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+
+    }
+
+    .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+#bookingForm{margin-left: 200px;}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
     </style>
 </head>
 
 <body>
+    <header>
+        <a href="/pages/admin/admin.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h3>Meetup Slot Booking</h3>
+       <div></div> 
+    </header>
     <div class="container">
-        <h1>Meetup Slot Booking</h1>
-        <h2>Select a Section</h2>
+       
+        <!-- <h2>Select a Section</h2>
         <select id="sectionSelect" disabled>
             <option value="A">Section A</option>
             <option value="B">Section B</option>
-        </select>
+        </select> -->
 
         <h2 id="sectionHeader">Calendar for Section A</h2>
         <div id="calendar" class="calendar"></div>
+
+        <div id="loading">
+            <div class="spinner"></div>
+
+        </div>
 
         <div id="slots-container" class="hidden">
             <h2>Available Slots</h2>
@@ -156,6 +218,8 @@
 
         // Fetch calendar data based on section
         function fetchCalendar(section) {
+
+            
             sectionHeader.textContent = `Calendar for Section ${section}`;
             fetch(`${apiUrl}/calendar/${section}`)
                 .then(response => response.json())
@@ -177,15 +241,20 @@
 
                         calendarElement.appendChild(dateDiv);
                     });
+                    hideLoading();
                 })
                 .catch(error => console.error("Failed to load calendar:", error));
         }
 
         // Fetch available slots for a selected date and section
         function fetchSlots(section, date) {
+
+            showLoading()
             fetch(`${apiUrl}/slots/${section}/${date}`)
                 .then(response => response.json())
                 .then(data => {
+
+                    hideLoading()
                     slotsElement.innerHTML = ""; // Clear previous slots
                     data.slots.forEach(slot => {
                         const slotDiv = document.createElement("div");
@@ -200,7 +269,11 @@
                     });
                     slotsContainer.classList.remove("hidden");
                 })
-                .catch(error => console.error("Failed to load slots:", error));
+                .catch(error => {
+                hideLoading();
+                console.error("Failed to load slots:", error);
+            });
+        
         }
 
         // Show the booking form
@@ -286,13 +359,26 @@
                 .catch(error => console.error("Failed to delete slot:", error));
         }
 
+
+
+
+
         // Initialize with the default section
         //sectionSelect.addEventListener("change", event => {
         //            fetchCalendar(event.target.value);
         //});
 
         // Load the calendar when the page loads
+
         fetchCalendar(sectionSelect);
+
+        function showLoading() {
+    document.getElementById("loading").style.display = "flex";
+}
+
+function hideLoading() {
+    document.getElementById("loading").style.display = "none";
+}
     </script>
 </body>
 
