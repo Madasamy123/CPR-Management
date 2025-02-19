@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dynamic Calendar with Slot Booking</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
             background: linear-gradient(to bottom right, #eef2f3, #8e9eab);
             margin: 0;
             padding: 0;
@@ -82,9 +83,28 @@
             transform: translateY(-5px);
         }
         
-        .day.highlighted {
-            background: #ffd700;
-            color: #fff;
+        .day.fully-booked {
+            background: red;
+        }
+        
+        .day.partially-booked {
+            background: yellow;
+            color: white;
+        }
+        
+        .partially-booked {
+            background: red;
+            color: white;
+        }
+        
+        #slotsContainer {
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .day.empty {
@@ -158,6 +178,38 @@
             color: #555;
         }
         
+        #details-colour {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Optional: Light background */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            /* Optional: Soft shadow */
+        }
+        
+        .parent {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+        
+        .child {
+            width: 10px;
+            height: 10px;
+            border: 1px solid black;
+        }
+        
+        .text {
+            font-size: 14px;
+            color: #333;
+            /* Dark text for readability */
+            margin: 0;
+        }
+        
         @media (max-width: 768px) {
             .calendar {
                 grid-template-columns: repeat(3, 1fr);
@@ -190,19 +242,29 @@
     </div>
     <div class="calendar" id="calendar"></div>
 
-    <span id="error"></span>
+    <div id="details-colour">
+        <div class="parent">
+            <div class="child" style="background-color: red;width: 10px; height: 10px;"></div>
+            <p class="text">Indicates Fully Booked</p>
+        </div>
+        <div class="parent">
+            <div class="child" style="background-color: white;width: 10px; height: 10px;"></div>
+            <p class="text">Indicates Available slots</p>
+        </div>
+        <div class="parent">
+            <div class="child" style="background-color: yellow;width: 10px; height: 10px;"></div>
+            <p class="text">Indicates Partially Booked</p>
+        </div>
+    </div>
 
-    <!-- Booking Form -->
     <div id="booking-form" class="booking-form">
         <h2>Book Slot</h2>
         <p id="selectedDate"></p>
-        <input type="time" id="slotTime" placeholder="Enter Time" />
         <input type="text" id="studentName" placeholder="Enter Student Name" />
         <button id="bookButton">Book Slot</button>
         <button onclick="closeBookingForm()">Cancel</button>
     </div>
 
-    <!-- Slot Details -->
     <div id="detailsContainer">
         <h2>Slot Details</h2>
         <p id="adminName"></p>
@@ -215,33 +277,42 @@
     <script>
         const calendar = document.getElementById("calendar");
         const monthDisplay = document.getElementById("monthDisplay");
-        const sectionSelect = document.getElementById("sectionSelect");
+        //const bookingForm = document.getElementById("booking-form");
+        const detailsContainer = document.getElementById("detailsContainer");
+        const slotContainer = document.createElement("div");
+        slotContainer.classList.add("slot-container");
 
         let displayedYear = new Date().getFullYear();
         let displayedMonth = new Date().getMonth();
+        let selectedDate = null;
 
         const months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December",
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
         ];
 
-        // User info
-        const user = JSON.parse(localStorage.getItem("user")) || {
-            section: "A",
-            role: "admin",
-            name: "Admin"
-        };
-        sectionSelect.value = user.section || "A";
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        const section = user.section || "default_section";
+        const role = user.role;
 
-        // Event Listeners
-        document.getElementById("prevMonth").addEventListener("click", () => changeMonth(-1));
-        document.getElementById("nextMonth").addEventListener("click", () => changeMonth(1));
-        sectionSelect.addEventListener("change", () => {
-            user.section = sectionSelect.value;
-            loadCalendar(displayedYear, displayedMonth);
-        });
+        // Change month functionality
+        document
+            .getElementById("prevMonth")
+            .addEventListener("click", () => changeMonth(-1));
+        document
+            .getElementById("nextMonth")
+            .addEventListener("click", () => changeMonth(1));
 
-        // Change displayed month
         function changeMonth(offset) {
             displayedMonth += offset;
             if (displayedMonth < 0) {
@@ -254,7 +325,6 @@
             loadCalendar(displayedYear, displayedMonth);
         }
 
-        // Load calendar
         function loadCalendar(year, month) {
             calendar.innerHTML = "";
             monthDisplay.textContent = `${months[month]} ${year}`;
@@ -262,131 +332,150 @@
             const firstDayOfMonth = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            // Fill empty days
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                const emptyDiv = document.createElement("div");
-                emptyDiv.classList.add("day", "empty");
-                calendar.appendChild(emptyDiv);
-            }
-
-            // Fill days with dates
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayDiv = document.createElement("div");
-                dayDiv.classList.add("day");
-                dayDiv.textContent = day;
-                dayDiv.dataset.date = `${year}-${month + 1}-${day}`;
-                calendar.appendChild(dayDiv);
-
-                dayDiv.addEventListener("click", () => openBookingForm(dayDiv.dataset.date));
-            }
-
-            // Fetch and highlight events
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${user.section}`)
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${section}`)
                 .then(res => res.json())
                 .then(events => {
+                    const bookedSlots = {};
                     events.forEach(event => {
-                        const eventDate = new Date(event.start_time);
-                        const eventDateStr = `${eventDate.getFullYear()}-${eventDate.getMonth() + 1}-${eventDate.getDate()}`;
-                        const dayElement = calendar.querySelector(`[data-date="${eventDateStr}"]`);
-                        if (dayElement) {
-                            dayElement.classList.add("highlighted");
-                            dayElement.onclick = () => openBookingDetails(event._id);
-                        }
+                        if (!bookedSlots[event.date]) bookedSlots[event.date] = [];
+                        bookedSlots[event.date].push(event.slot);
                     });
-                })
-                .catch(err => console.error("Error fetching events:", err));
+
+                    for (let i = 0; i < firstDayOfMonth; i++) {
+                        const emptyDiv = document.createElement("div");
+                        emptyDiv.classList.add("day", "empty");
+                        calendar.appendChild(emptyDiv);
+                    }
+
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dayDiv = document.createElement("div");
+                        dayDiv.classList.add("day");
+                        dayDiv.textContent = day;
+                        const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                        dayDiv.dataset.date = date;
+                        dayDiv.addEventListener("click", () => openSlots(date));
+
+                        if (bookedSlots[date]) {
+                            const slotsBooked = bookedSlots[date].length;
+                            if (slotsBooked === 3) {
+                                dayDiv.style.backgroundColor = "red";
+                            } else if (slotsBooked > 0) {
+                                dayDiv.style.backgroundColor = "yellow";
+                            }
+                        }
+
+                        calendar.appendChild(dayDiv);
+                    }
+                });
         }
 
-        // Open booking form
-        function openBookingForm(date) {
-            if (user.role === "lead") {
-                const errorSpan = document.getElementById("error");
-                errorSpan.textContent = "You cannot book slots as a lead.";
-                setTimeout(() => (errorSpan.textContent = ""), 3000);
-                return;
-            }
+        function openSlots(date) {
+            selectedDate = date;
+            slotContainer.innerHTML = "";
+            document.body.appendChild(slotContainer);
 
-            const bookingForm = document.getElementById("booking-form");
-            bookingForm.style.display = "block";
-            document.getElementById("selectedDate").textContent = `Selected Date: ${date}`;
-            document.getElementById("bookButton").onclick = () => submitBookingForm(date);
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${section}`)
+                .then(res => res.json())
+                .then(events => {
+                    const bookedSlots = {};
+                    events.forEach(event => {
+                        if (!bookedSlots[event.date]) bookedSlots[event.date] = {};
+                        bookedSlots[event.date][event.slot] = event;
+                    });
+
+                    ["3-4 PM", "4-5 PM", "5-6 PM"].forEach(slot => {
+                        const slotButton = document.createElement("button");
+                        slotButton.classList.add("slot");
+                        slotButton.textContent = slot;
+                        slotButton.value = slot;
+
+                        if (bookedSlots[date] && bookedSlots[date][slot]) {
+                            slotButton.classList.add("partially-booked");
+                            slotButton.addEventListener("click", () => showDetails(bookedSlots[date][slot]), slot);
+                        } else {
+                            slotButton.style.backgroundColor = "green";
+
+                            slotButton.addEventListener("click", () => alert("You can't book a slot as a Admin"));
+                        }
+                        slotContainer.appendChild(slotButton);
+                    });
+                });
         }
 
-        // Close booking form
-        function closeBookingForm() {
-            document.getElementById("booking-form").style.display = "none";
-        }
+        // function openBookingForm(date, slot) {
+        // bookingForm.style.display = "block";
+        //   document.getElementById("selectedDate").textContent = `Date: ${date} | Slot: ${slot}`;
+        //  document.getElementById("bookButton").onclick = () => submitBookingForm(date, slot);
+        //}
 
-        // Submit booking form
-        function submitBookingForm(date) {
+        // function closeBookingForm() {
+        //    bookingForm.style.display = "none";
+        //}
+
+        function submitBookingForm(date, slot) {
             const studentName = document.getElementById("studentName").value.trim();
-            const slotTime = document.getElementById("slotTime").value.trim();
-
-            if (!studentName || !slotTime) {
-                alert("Please enter the student's name and slot time.");
+            if (!studentName) {
+                alert("Please enter the student's name.");
                 return;
             }
 
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/book-slot-${user.section}`, {
+            const bookingData = {
+                date,
+                slot,
+                student: studentName,
+                admin: user.name,
+                section
+            };
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/book-slot-${section}/${date}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({
-                        date,
-                        time: slotTime,
-                        admin: user.name,
-                        student: studentName,
-                        role: user.role,
-                        section: user.section,
-                    }),
+                    body: JSON.stringify(bookingData),
                 })
                 .then(res => res.json())
                 .then(data => {
-                    alert(data.message || data.error);
+                    alert(data.message || "Slot booked successfully.");
                     closeBookingForm();
                     loadCalendar(displayedYear, displayedMonth);
                 })
-                .catch(err => console.error("Error booking slot:", err));
+                .catch(err => {
+                    console.error("Error booking slot:", err);
+                    alert("Failed to book slot. Please try again.");
+                });
         }
 
-        // Open booking details
-        function openBookingDetails(slotId) {
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/slot-details/${user.section}/${slotId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const detailsContainer = document.getElementById("detailsContainer");
-                    detailsContainer.style.display = "block";
-                    document.getElementById("adminName").textContent = `Admin: ${data.admin}`;
-                    document.getElementById("studentNameDetails").textContent = `Student: ${data.student}`;
-                    document.getElementById("bookingDate").textContent = `Date: ${new Date(data.start_time).toLocaleString()}`;
-                    document.getElementById("deleteButton").onclick = () => deleteSlot(slotId);
-                    document.getElementById("booking-form").style.display = "none";
-                })
-                .catch(err => console.error("Error fetching slot details:", err));
+        function showDetails(event, slot) {
+            detailsContainer.style.display = "block";
+            document.getElementById("adminName").textContent = `Admin: ${event.admin}`;
+            document.getElementById("studentNameDetails").textContent = `Student: ${event.student}`;
+            document.getElementById("bookingDate").textContent = `Date: ${event.date} | Slot: ${event.slot}`;
+            document.getElementById("deleteButton").onclick = () => deleteSlot(event.slot);
         }
 
-        // Close booking details
         function closeDetails() {
-            document.getElementById("detailsContainer").style.display = "none";
+            detailsContainer.style.display = "none";
         }
 
-        // Delete slot
-        function deleteSlot(slotId) {
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/delete-slot/${user.section}/${slotId}`, {
+        function deleteSlot(slot) {
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/delete-slot/${section}/${slot}`, {
                     method: "DELETE"
                 })
                 .then(res => res.json())
                 .then(data => {
-                    alert(data.message || data.error);
+                    alert(data.message || "Slot deleted successfully.");
                     closeDetails();
                     loadCalendar(displayedYear, displayedMonth);
                 })
-                .catch(err => console.error("Error deleting slot:", err));
+                .catch(err => {
+                    console.error("Error deleting slot:", err);
+                    alert("Failed to delete slot. Please try again.");
+                });
         }
 
-        // Load initial calendar
-        loadCalendar(displayedYear, displayedMonth);
+        window.addEventListener("load", () => {
+            loadCalendar(displayedYear, displayedMonth);
+        });
     </script>
 </body>
 

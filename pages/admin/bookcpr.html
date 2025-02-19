@@ -2,27 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dynamic Calendar with Slot Booking</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
             background: linear-gradient(to bottom right, #eef2f3, #8e9eab);
-            min-height: 100vh;
             margin: 0;
             padding: 0;
-          
-        }
-
-        .main_content{
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-           
-
+            min-height: 100vh;
         }
         
         h1 {
@@ -89,9 +82,28 @@
             transform: translateY(-5px);
         }
         
-        .day.highlighted {
-            background: #ffd700;
-            color: #fff;
+        .day.fully-booked {
+            background: red;
+        }
+        
+        .day.partially-booked {
+            background: yellow;
+            color: white;
+        }
+        
+        .partially-booked {
+            background: red;
+            color: white;
+        }
+        
+        #slotsContainer {
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .day.empty {
@@ -159,23 +171,37 @@
             border-radius: 10px;
         }
         
-        #detailsContainer p {
-            margin: 5px 0;
-            font-size: 1rem;
-            color: #555;
+        #details-colour {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Optional: Light background */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            /* Optional: Soft shadow */
         }
-
-        header{
+        
+        .parent {
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
         }
-
-        .fa-arrow-left{
-        font-size: 35px;
-        color: black;
-        margin-top: 15px;
-        margin-left: 20px;
-    }
+        
+        .child {
+            width: 10px;
+            height: 10px;
+            border: 1px solid black;
+        }
+        
+        .text {
+            font-size: 14px;
+            color: #333;
+            /* Dark text for readability */
+            margin: 0;
+        }
         
         @media (max-width: 768px) {
             .calendar {
@@ -197,58 +223,83 @@
 </head>
 
 <body>
-    <header>
-        <a href="/pages/admin/admin.html"><i class="fa-solid fa-arrow-left"></i></a>
-        <div></div>
-    </header>
-
-    <div class="main_content">
-        <h1 id="monthDisplay">January 2024</h1>
-        <div class="controls">
-            <button id="prevMonth">Previous Month</button>
-            <button id="nextMonth">Next Month</button>
-        </div>
-        <div class="calendar" id="calendar"></div>
-    
-        <div id="booking-form" class="booking-form">
-            <h2>Book Slot</h2>
-            <p id="selectedDate"></p>
-            <input type="time" id="slotTime" placeholder="Enter Time" />
-            <input type="text" id="studentName" placeholder="Enter Student Name" />
-            <button id="bookButton">Book Slot</button>
-            <button onclick="closeBookingForm()">Cancel</button>
-        </div>
-    
-        <div id="detailsContainer">
-            <h2>Slot Details</h2>
-            <p id="adminName"></p>
-            <p id="studentNameDetails"></p>
-            <p id="bookingDate"></p>
-            <button id="deleteButton">Delete Slot</button>
-            <button onclick="closeDetails()">Close</button>
-        </div>
-
+    <h1 id="monthDisplay">January 2024</h1>
+    <div class="controls">
+        <button id="prevMonth">Previous Month</button>
+        <button id="nextMonth">Next Month</button>
     </div>
-   
+    <div class="calendar" id="calendar"></div>
+
+    <div id="details-colour">
+        <div class="parent">
+            <div class="child" style="background-color: red;width: 10px; height: 10px;"></div>
+            <p class="text">Indicates Fully Booked</p>
+        </div>
+        <div class="parent">
+            <div class="child" style="background-color: white;width: 10px; height: 10px;"></div>
+            <p class="text">Indicates Available slots</p>
+        </div>
+        <div class="parent">
+            <div class="child" style="background-color: yellow;width: 10px; height: 10px;"></div>
+            <p class="text">Indicates Partially Booked</p>
+        </div>
+    </div>
+
+    <div id="booking-form" class="booking-form">
+        <h2>Book Slot</h2>
+        <p id="selectedDate"></p>
+        <input type="text" id="studentName" placeholder="Enter Student Name" />
+        <button id="bookButton">Book Slot</button>
+        <button onclick="closeBookingForm()">Cancel</button>
+    </div>
+
+    <div id="detailsContainer">
+        <h2>Slot Details</h2>
+        <p id="adminName"></p>
+        <p id="studentNameDetails"></p>
+        <p id="bookingDate"></p>
+        <button id="deleteButton">Delete Slot</button>
+        <button onclick="closeDetails()">Close</button>
+    </div>
 
     <script>
         const calendar = document.getElementById("calendar");
         const monthDisplay = document.getElementById("monthDisplay");
+        const bookingForm = document.getElementById("booking-form");
+        const detailsContainer = document.getElementById("detailsContainer");
+        const slotContainer = document.createElement("div");
+        slotContainer.classList.add("slot-container");
 
         let displayedYear = new Date().getFullYear();
         let displayedMonth = new Date().getMonth();
+        let selectedDate = null;
 
         const months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December",
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
         ];
 
         const user = JSON.parse(localStorage.getItem("user") || "{}");
         const section = user.section || "default_section";
-        const role = user.role || "user";
+        const role = user.role;
 
-        document.getElementById("prevMonth").addEventListener("click", () => changeMonth(-1));
-        document.getElementById("nextMonth").addEventListener("click", () => changeMonth(1));
+        // Change month functionality
+        document
+            .getElementById("prevMonth")
+            .addEventListener("click", () => changeMonth(-1));
+        document
+            .getElementById("nextMonth")
+            .addEventListener("click", () => changeMonth(1));
 
         function changeMonth(offset) {
             displayedMonth += offset;
@@ -269,57 +320,99 @@
             const firstDayOfMonth = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                const emptyDiv = document.createElement("div");
-                emptyDiv.classList.add("day", "empty");
-                calendar.appendChild(emptyDiv);
-            }
-
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayDiv = document.createElement("div");
-                dayDiv.classList.add("day");
-                dayDiv.textContent = day;
-                dayDiv.dataset.date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-                calendar.appendChild(dayDiv);
-
-                dayDiv.addEventListener("click", () => openBookingForm(dayDiv.dataset.date));
-            }
-
             fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${section}`)
-                .then(res => res.json())
-                .then(events => {
-                    events.forEach(event => {
-                        const eventDate = new Date(event.start_time);
-                        const eventDateStr = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, "0")}-${String(eventDate.getDate()).padStart(2, "0")}`;
-                        const dayElement = document.querySelector(`[data-date="${eventDateStr}"]`);
-                        if (dayElement) {
-                            dayElement.classList.add("highlighted");
-                            dayElement.onclick = () => openBookingDetails(event._id);
-                        }
+                .then((res) => res.json())
+                .then((events) => {
+                    const bookedSlots = {};
+                    events.forEach((event) => {
+                        if (!bookedSlots[event.date]) bookedSlots[event.date] = [];
+                        bookedSlots[event.date].push(event.slot);
                     });
-                })
-                .catch(err => console.error("Error fetching events:", err));
+
+                    for (let i = 0; i < firstDayOfMonth; i++) {
+                        const emptyDiv = document.createElement("div");
+                        emptyDiv.classList.add("day", "empty");
+                        calendar.appendChild(emptyDiv);
+                    }
+
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dayDiv = document.createElement("div");
+                        dayDiv.classList.add("day");
+                        dayDiv.textContent = day;
+                        const date = `${year}-${String(month + 1).padStart(
+                2,
+                "0"
+              )}-${String(day).padStart(2, "0")}`;
+                        dayDiv.dataset.date = date;
+                        dayDiv.addEventListener("click", () => openSlots(date));
+
+                        if (bookedSlots[date]) {
+                            const slotsBooked = bookedSlots[date].length;
+                            if (slotsBooked === 3) {
+                                dayDiv.style.backgroundColor = "red";
+                            } else if (slotsBooked > 0) {
+                                dayDiv.style.backgroundColor = "yellow";
+                            }
+                        }
+
+                        calendar.appendChild(dayDiv);
+                    }
+                });
         }
 
-        function openBookingForm(date) {
-            document.getElementById("booking-form").style.display = "block";
-            document.getElementById("selectedDate").textContent = `Selected Date: ${date}`;
-            document.getElementById("bookButton").onclick = () => submitBookingForm(date);
+        function openSlots(date) {
+            selectedDate = date;
+            slotContainer.innerHTML = "";
+            document.body.appendChild(slotContainer);
+
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${section}`)
+                .then((res) => res.json())
+                .then((events) => {
+                    const bookedSlots = {};
+                    events.forEach((event) => {
+                        if (!bookedSlots[event.date]) bookedSlots[event.date] = {};
+                        bookedSlots[event.date][event.slot] = event;
+                    });
+
+                    ["3-4 PM", "4-5 PM", "5-6 PM"].forEach((slot) => {
+                        const slotButton = document.createElement("button");
+                        slotButton.classList.add("slot");
+                        slotButton.textContent = slot;
+                        slotButton.value = slot;
+
+                        if (bookedSlots[date] && bookedSlots[date][slot]) {
+                            slotButton.classList.add("partially-booked");
+                            slotButton.addEventListener(
+                                "click",
+                                () => showDetails(bookedSlots[date][slot]),
+                                slot
+                            );
+                        } else {
+                            slotButton.style.backgroundColor = "green";
+                            slotButton.addEventListener("click", () =>
+                                openBookingForm(date, slot)
+                            );
+                        }
+                        slotContainer.appendChild(slotButton);
+                    });
+                });
+        }
+
+        function openBookingForm(date, slot) {
+            bookingForm.style.display = "block";
+            document.getElementById(
+                "selectedDate"
+            ).textContent = `Date: ${date} | Slot: ${slot}`;
+            document.getElementById("bookButton").onclick = () =>
+                submitBookingForm(date, slot);
         }
 
         function closeBookingForm() {
-            document.getElementById("booking-form").style.display = "none";
+            bookingForm.style.display = "none";
         }
 
-        function submitBookingForm(date) {
-            const slotTime = document.getElementById("slotTime").value;
+        function submitBookingForm(date, slot) {
             const studentName = document.getElementById("studentName").value.trim();
-
-            if (!slotTime) {
-                alert("Please enter a valid time.");
-                return;
-            }
-
             if (!studentName) {
                 alert("Please enter the student's name.");
                 return;
@@ -327,74 +420,68 @@
 
             const bookingData = {
                 date,
-                time: slotTime,
-                admin: user.name,
+                slot,
                 student: studentName,
-                role,
+                admin: user.name,
                 section,
             };
-
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/book-slot-${section}`, {
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/book-slot-${section}/${date}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(bookingData),
                 })
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     alert(data.message || "Slot booked successfully.");
                     closeBookingForm();
                     loadCalendar(displayedYear, displayedMonth);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error("Error booking slot:", err);
-                    alert(err.message || "Failed to book slot. Please try again.");
+                    alert("Failed to book slot. Please try again.");
                 });
         }
 
-        function openBookingDetails(slotId) {
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/slot-details/${section}/${slotId}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.admin && data.student && data.start_time) {
-                        document.getElementById("booking-form").style.display = "none";
-                        document.getElementById("detailsContainer").style.display = "block";
-                        document.getElementById("adminName").textContent = `Admin: ${data.admin}`;
-                        document.getElementById("studentNameDetails").textContent = `Student: ${data.student}`;
-                        document.getElementById("bookingDate").textContent = `Date: ${new Date(data.start_time).toLocaleString()}`;
-                        document.getElementById("deleteButton").onclick = () => deleteSlot(slotId);
-                    } else {
-                        alert("Missing required slot data.");
-                    }
-                })
-                .catch(err => {
-                    console.error("Error fetching slot details:", err);
-                    alert("Failed to fetch slot details. Please try again.");
-                });
+        function showDetails(event, slot) {
+            detailsContainer.style.display = "block";
+            document.getElementById(
+                "adminName"
+            ).textContent = `Admin: ${event.admin}`;
+            document.getElementById(
+                "studentNameDetails"
+            ).textContent = `Student: ${event.student}`;
+            document.getElementById(
+                "bookingDate"
+            ).textContent = `Date: ${event.date} | Slot: ${event.slot}`;
+            document.getElementById("deleteButton").onclick = () =>
+                deleteSlot(event.slot);
         }
 
         function closeDetails() {
-            document.getElementById("detailsContainer").style.display = "none";
+            detailsContainer.style.display = "none";
         }
 
-        function deleteSlot(slotId) {
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/delete-slot/${section}/${slotId}`, {
-                    method: "DELETE"
+        function deleteSlot(slot) {
+            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/delete-slot/${section}/${slot}`, {
+                    method: "DELETE",
                 })
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     alert(data.message || "Slot deleted successfully.");
                     closeDetails();
                     loadCalendar(displayedYear, displayedMonth);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error("Error deleting slot:", err);
                     alert("Failed to delete slot. Please try again.");
                 });
         }
 
-        loadCalendar(displayedYear, displayedMonth);
+        window.addEventListener("load", () => {
+            loadCalendar(displayedYear, displayedMonth);
+        });
     </script>
 </body>
 
