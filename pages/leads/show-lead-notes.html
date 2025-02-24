@@ -1,1 +1,153 @@
-<!-- Show Private note lead -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+    <title>Admin Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            /* display: flex; */
+            /* justify-content: center;
+            align-items: center; */
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            width: 750px;
+            place-self:center ;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        
+        #notesContainer {
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .note {
+            background: #ffffff;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+           
+        }
+
+        .note h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .note p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        header {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            /* padding: 20px 10px; */
+            /* font-size: 1.8rem; */
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+          
+        
+        }
+
+        .fa-arrow-left{
+        font-size: 35px;
+        color: black;
+        margin-top: 15px;
+        margin-left: 20px;
+        background: transparent;
+        border:none;
+
+    }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <i onclick="history.back()" class="fa-solid fa-arrow-left"></i>
+        <h3>Admin Feedback</h3>
+       <div></div> 
+    </header>
+    <div class="container">
+       
+        <div id="notesContainer"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const user = JSON.parse(localStorage.getItem("user")) || {};
+            const adminName = user.name; // Getting the stored name from localStorage
+
+            if (!adminName) {
+                document.getElementById("notesContainer").innerHTML = `<p class="error">Admin name not found in local storage.</p>`;
+                return;
+            }
+
+            fetchFeedback(adminName);
+        });
+
+        function fetchFeedback(adminName) {
+    const notesContainer = document.getElementById('notesContainer');
+    notesContainer.innerHTML = `<p style="color: blue;">Fetching feedback...</p>`;
+
+    fetch(`https://personalnotes-dzuq.onrender.com/get-all-notes-admin/${adminName}`, {
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Full API Response:", data); // 🔍 Log API response
+        notesContainer.innerHTML = ''; // Clear previous results
+
+        if (data.error) {
+            notesContainer.innerHTML = `<p class="error">${data.error}</p>`;
+        } else {
+            data.data.forEach(note => {
+                console.log("Each Note Object:", note); // 🔍 Check available fields
+
+                const noteElement = document.createElement('div');
+                noteElement.classList.add('note');
+                noteElement.innerHTML = `
+                    <h5>${note.date || "No Date"}</h5>
+                    <h3>${ note.Title || "No Topic Available"}</h3>
+                    <p>${note.Notes || "No Notes"}</p>
+                `;
+                notesContainer.appendChild(noteElement);
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Fetch Error:", error); // 🔍 Log fetch errors
+        notesContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+    });
+}
+    </script>
+</body>
+</html>

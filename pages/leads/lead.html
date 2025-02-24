@@ -57,9 +57,10 @@
         /* Main Content Styling */
         main {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(3, 2fr);
+            gap: 50px;
             padding: 30px;
+            margin-top: 80px;
         }
 
         .card {
@@ -70,7 +71,7 @@
             padding: 20px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             cursor: pointer;
-            height: 160px;
+            height: 200px;
         }
 
         .card:hover {
@@ -82,6 +83,7 @@
             margin: 10px 0;
             font-size: 1.2rem;
             color: #333;
+            margin-top: 90px;
         }
 
         .card a {
@@ -90,22 +92,20 @@
         }
 
         .card-full {
-            grid-column: span 3;
-            background-color: #e0f7fa;
+            /* grid-column: span 3; */
+            background-color: white;
             color: #00796b;
-            padding: 30px;
+            /* padding: 30px; */
             text-align: left;
         }
 
         .card-full h2 {
-            margin: 0 0 10px;
-            font-size: 1.5rem;
+            margin-left: 30px;
+            font-size: 1.2rem;
+            margin-top: 90px;
         }
 
-        .card-full p {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
+     
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -153,15 +153,10 @@
         <div class="card">
             <a href="../scores/scores1.html"><h2>Scores</h2></a>
         </div>
-        <!-- <div class="card">
-            <a href="/pages/ro.html"><h2>Reflection & Observation</h2></a>
-        </div> -->
-        <!-- <div class="card">
-            <a href="/pages/csm.html"><h2>Meet a Student</h2></a>
-        </div> -->
+       
         <div class="card card-full">
-            <h2>Student Progress Overview</h2>
-            <p>This section displays a comprehensive overview of student performance and progress tracking.</p>
+            <a href="./private-note-lead.html"><h2>Student Progress Overview</h2></a>
+           
         </div>
     </main>
 

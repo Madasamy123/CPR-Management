@@ -6,16 +6,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Score Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Include the general styles */
         
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #FFF2F2;
             margin: 0;
             padding: 0;
         }
+
+        .header {
+            background-color: #2D336B;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .fa-arrow-left{
+        font-size: 35px;
+        color: white;
+        margin-top: 15px;
+    }
         
         .content {
             margin: 20px;
@@ -64,7 +84,7 @@
         }
         
         .form-container button {
-            background-color: #4caf50;
+            background-color: #A9B5DF;
             color: white;
             cursor: pointer;
             font-weight: bold;
@@ -72,7 +92,7 @@
         }
         
         .form-container button:hover {
-            background-color: #45a049;
+            background-color: #2D336B;
         }
         /* Table for displaying student data */
         
@@ -157,6 +177,12 @@
 </head>
 
 <body>
+
+  <div class="header">
+  <div>   <a href="/pages/students/students.html"><i class="fa-solid fa-arrow-left"></i></a></div>
+  <h3 >Student Scores</h3>
+  <div></div>
+</div>
     <div class="content" id="content"></div>
 
     <script>
@@ -201,7 +227,7 @@
       // Check role and render content accordingly
       if (role === "student") {
         contentDiv.innerHTML = `
-                <h2>Student: View Your Scores (Graphical View)</h2>
+               
                 <form id="viewScoresForm" class="form-container">
                     <label for="selectMonth">Select Month:</label>
                     <select id="selectStudentMonth">

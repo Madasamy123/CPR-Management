@@ -13,11 +13,11 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: #FFF2F2;
         }
         
         .header {
-            background-color: #4CAF50;
+            background-color: #2D336B;
             color: white;
             padding: 15px;
             text-align: center;
@@ -179,7 +179,7 @@
 
     .fa-arrow-left{
         font-size: 35px;
-        color: black;
+        color: white;
         margin-top: 15px;
     }
     /* .header>.head{
@@ -226,7 +226,7 @@
             <form id="bookingForm">
                 <input type="hidden" id="selectedDate">
                 <input type="hidden" id="selectedSlot">
-                <label for="studentId">Enter Your Student ID:</label>
+                <label for="studentId">Enter Your Name:</label>
                 <input type="text" id="studentId" required>
                 <button type="submit">Book Slot</button>
             </form>
@@ -238,7 +238,8 @@
     const user = JSON.parse(localStorage.getItem("user")) || {};
     
     const sectionSelect = user ? user.section : null;
-    const studentId = user ? user.email : "";
+    const studentId = user ? user.name : "";
+    const studentEmail=user ? user.name: "";
 
     console.log(studentId)
 
@@ -334,6 +335,7 @@
             date: document.getElementById("selectedDate").value,
             time: document.getElementById("selectedSlot").value,
             student_id: document.getElementById("studentId").value,
+            email: studentEmail,
             section: sectionSelect
         };
 
