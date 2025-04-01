@@ -378,7 +378,7 @@
                         const slotButton = document.createElement("button");
                         slotButton.classList.add("slot");
                         slotButton.textContent = slot;
-                        slotButton.value = slot;
+                        slotButton.value = slot; 
 
                         if (bookedSlots[date] && bookedSlots[date][slot]) {
                             slotButton.classList.add("partially-booked");

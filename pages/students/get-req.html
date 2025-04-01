@@ -161,7 +161,7 @@
         const user = JSON.parse(localStorage.getItem("user"));
         const studentName = user.name.replace(/\s+/g, "_");
 
-        fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/student-slots/${studentName}`)
+        fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/student-slots/${studentName}`) // check the slot-lead-student.py
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch slots");

@@ -200,35 +200,21 @@
             studentNameDisplay.textContent = studentName;
         }
 
-        // // Populate months in dropdown
-        // function populateMonths() {
-        //     const currentDate = new Date();
-        //     for (let i = 0; i < 12; i++) {
-        //         const month = new Date(currentDate.getFullYear(), i).toISOString().slice(0, 7);
-        //         const option = document.createElement('option');
-        //         option.value = month;
-        //         option.textContent = month;
-        //         monthSelect.appendChild(option);
+        // async function fetchSections() {
+        //     try {
+        //         const response = await fetch(`${API_BASE_URL}/sections`);
+        //         const data = await response.json();
+        //         sectionSelect.innerHTML = '';
+        //         data.sections.forEach(section => {
+        //             const option = document.createElement('option');
+        //             option.value = section.replace('track_goals_', '');
+        //             option.textContent = section.replace('track_goals_', '');
+        //             sectionSelect.appendChild(option);
+        //         });
+        //     } catch (error) {
+        //         console.error('Error fetching sections:', error);
         //     }
-        //     monthSelect.value = new Date().toISOString().slice(0, 7); // Set default to current month
         // }
-
-        // Fetch all available sections from the backend
-        async function fetchSections() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/sections`);
-                const data = await response.json();
-                sectionSelect.innerHTML = '';
-                data.sections.forEach(section => {
-                    const option = document.createElement('option');
-                    option.value = section.replace('track_goals_', '');
-                    option.textContent = section.replace('track_goals_', '');
-                    sectionSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error fetching sections:', error);
-            }
-        }
 
         // Fetch goals for the student
         async function fetchGoals() {
@@ -289,10 +275,10 @@
         fetchGoalsBtn.addEventListener('click', fetchGoals);
 
         // Initialize page
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchSections();
+        //document.addEventListener('DOMContentLoaded', () => {
+        //    fetchSections();
             // populateMonths();
-        });
+        //});
     </script>
 </body>
 

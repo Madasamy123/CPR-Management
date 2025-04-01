@@ -66,9 +66,10 @@
 
     <script>
         function submitNotes() {
-            const name = document.getElementById("name").value.trim();
+            const Title = document.getElementById("name").value.trim();
             const email = document.getElementById("email").value.trim();
             const notes = document.getElementById("notes").value.trim();
+            const name  = JSON.parse(localStorage.getItem("user")).name;
             const messageEl = document.getElementById("message");
 
             if (!name || !email || !notes) {
@@ -77,12 +78,13 @@
                 return;
             }
 
-            fetch(`https://personalnotes-dzuq.onrender.com/get-notes-admin-${name}`, {
+            fetch(`http://127.0.0.1:5002/get-notes-admin-${name}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
+                        Title,
                         email,
                         Notes: notes
                     })
