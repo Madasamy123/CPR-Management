@@ -302,7 +302,7 @@
         ];
 
         const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const section = user.section || "default_section";
+        // const section = user.section || "default_section";
         const role = user.role;
 
         // Change month functionality
@@ -327,6 +327,7 @@
 
         function loadCalendar(year, month) {
             calendar.innerHTML = "";
+            const section = document.getElementById("sectionSelect").value;
             monthDisplay.textContent = `${months[month]} ${year}`;
 
             const firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -373,6 +374,7 @@
             selectedDate = date;
             slotContainer.innerHTML = "";
             document.body.appendChild(slotContainer);
+            const section = document.getElementById("sectionSelect").value;
 
             fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${section}`)
                 .then(res => res.json())
@@ -413,6 +415,7 @@
         //}
 
         function submitBookingForm(date, slot) {
+            const section = document.getElementById("sectionSelect").value;
             const studentName = document.getElementById("studentName").value.trim();
             if (!studentName) {
                 alert("Please enter the student's name.");
@@ -458,6 +461,7 @@
         }
 
         function deleteSlot(slot) {
+            const section = document.getElementById("sectionSelect").value;
             fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/delete-slot/${section}/${slot}`, {
                     method: "DELETE"
                 })
