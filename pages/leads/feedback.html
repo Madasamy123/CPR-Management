@@ -120,7 +120,7 @@
             const section = document.getElementById('section').value;
 
             try {
-                const response = await fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-students/${section}`);
+                const response = await fetch(`https://feedback-t9rz.onrender.com/get-students/${section}`);
                 if (response.ok) {
                     const data = await response.json();
                     const studentDropdown = document.getElementById('student');
@@ -148,7 +148,7 @@
             const studentEmail = document.getElementById('student').value;
 
             try {
-                const response = await fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-feedback/${studentEmail}`);
+                const response = await fetch(`https://feedback-t9rz.onrender.com/get-feedback/${studentEmail}`);
                 if (response.ok) {
                     const data = await response.json();
                     const feedbackTable = document.getElementById('feedbackTable');

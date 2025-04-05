@@ -16,8 +16,6 @@
         padding: 0;
         background-color: #f9f9f9;
       }
-
-<<<<<<< HEAD
       .header {
         background-color: #4caf50;
         color: white;
@@ -31,7 +29,6 @@
         flex-direction: row;
         justify-content: space-between;
       }
-=======
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -53,7 +50,6 @@
             justify-content: space-between;
            
         }
->>>>>>> db2d4c18691dbd9f281417ef96eed6d645b81b07
 
       /* Position the span in the top-right of the header */
       .header .booking-message {
@@ -215,19 +211,14 @@
 
   <body>
     <div class="header">
-<<<<<<< HEAD
       <a href="/pages/students/students.html"
-        ><i class="fa-solid fa-arrow-left"></i
-      ></a>
-=======
+        ><i class="fa-solid fa-arrow-left"></i></a>
        
                 <a href="./students.html"><i class="fa-solid fa-arrow-left"></i></a>
           
             <h3>Meetup Slot Booking</h3>
           
             <div> <span id="bookingMessage" class="booking-message"></span></div>
-           
->>>>>>> db2d4c18691dbd9f281417ef96eed6d645b81b07
 
       <h3>Meetup Slot Booking</h3>
 
@@ -242,8 +233,6 @@
         <h2>Available Slots</h2>
         <div id="slots" class="slots"></div>
       </div>
-
-<<<<<<< HEAD
       <div id="booking-container" class="hidden">
         <h2>Confirm Booking</h2>
         <form id="bookingForm">
@@ -256,10 +245,8 @@
       </div>
     </div>
 
-    <script>
-      const apiUrl = "https://cpr-csr-managements-meets-kca5.onrender.com";
-      const user = JSON.parse(localStorage.getItem("user")) || {};
-=======
+ 
+
         <div id="booking-container" class="hidden">
             <h2>Confirm Booking</h2>
             <form id="bookingForm">
@@ -273,16 +260,15 @@
     </div>
 
     <script>
-        const apiUrl = "https://cpr-csr-managements-meets-kca5.onrender.com";
-    const user = JSON.parse(localStorage.getItem("user")) || {};
+      const apiUrl = "https://meet-student.onrender.com";
+      const user = JSON.parse(localStorage.getItem("user")) || {};
+
     
     const sectionSelect = user ? user.section : null;
     const studentId = user ? user.name : "";
     const studentEmail=user ? user.name: "";
->>>>>>> db2d4c18691dbd9f281417ef96eed6d645b81b07
 
-      const sectionSelect = user ? user.section : null;
-      const studentId = user ? user.email : "";
+ 
 
       console.log(studentId);
 
@@ -383,18 +369,11 @@
       bookingForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const bookingData = {
-<<<<<<< HEAD
           date: document.getElementById("selectedDate").value,
           time: document.getElementById("selectedSlot").value,
           student_id: document.getElementById("studentId").value,
           section: sectionSelect,
-=======
-            date: document.getElementById("selectedDate").value,
-            time: document.getElementById("selectedSlot").value,
-            student_id: document.getElementById("studentId").value,
-            email: studentEmail,
-            section: sectionSelect
->>>>>>> db2d4c18691dbd9f281417ef96eed6d645b81b07
+  
         };
 
         fetch(`${apiUrl}/book_slot`, {

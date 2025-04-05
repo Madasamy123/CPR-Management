@@ -204,7 +204,7 @@
 
            
             try {
-                const response = await fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/api/students?section=${section}&month=${month}`);
+                const response = await fetch(`https://lead-status.onrender.com/api/students?section=${section}&month=${month}`);
                 const students = await response.json();
 
                 loading.style.display = "none"; // Hide spinner after data is fetched

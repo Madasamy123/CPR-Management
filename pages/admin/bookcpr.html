@@ -324,7 +324,7 @@
             const firstDayOfMonth = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${section}`)
+            fetch(`https://calender-jzs8.onrender.com/get-events-${section}`)
                 .then((res) => res.json())
                 .then((events) => {
                     const bookedSlots = {};
@@ -369,7 +369,7 @@
             slotContainer.innerHTML = "";
             document.body.appendChild(slotContainer);
 
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/get-events-${section}`)
+            fetch(`https://calender-jzs8.onrender.com/get-events-${section}`)
                 .then((res) => res.json())
                 .then((events) => {
                     const bookedSlots = {};
@@ -429,7 +429,7 @@
                 admin: user.name,
                 section,
             };
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/book-slot-${section}/${date}`, {
+            fetch(`https://calender-jzs8.onrender.com/book-slot-${section}/${date}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -468,7 +468,7 @@
         }
 
         function deleteSlot(slot) {
-            fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/delete-slot/${section}/${slot}`, {
+            fetch(`https://calender-jzs8.onrender.com/delete-slot/${section}/${slot}`, {
                     method: "DELETE",
                 })
                 .then((res) => res.json())

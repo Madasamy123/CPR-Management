@@ -263,7 +263,7 @@
             
                 // Fetch student data from the backend
                 const result = await fetchData(
-                  `https://cpr-csr-managements-1-ve5s.onrender.com/get_student_scores?email=${email}&section=${section}&month=${selectedStudentMonth}`
+                  `https://score-x81i.onrender.com/get_student_scores?email=${email}&section=${section}&month=${selectedStudentMonth}`
                 );
             
                 console.log(result);
@@ -407,7 +407,7 @@
             const selectedAdminMonth =
               document.getElementById("selectAdminMonth").value;
             const result = await fetchData(
-              `https://cpr-csr-managements-1-ve5s.onrender.com/get_scores_by_month?section=${selectedSection}&month=${selectedAdminMonth}`
+              `https://score-x81i.onrender.com/get_scores_by_month?section=${selectedSection}&month=${selectedAdminMonth}`
             );
 
             if (result.scores) {
@@ -458,7 +458,7 @@
             ];
 
             const result = await fetchData(
-              "https://cpr-csr-managements-1-ve5s.onrender.com/add_scores",
+              "https://score-x81i.onrender.com/add_scores",
               "POST",
               { email: studentEmail, scores, section, month: selectedMonth }
             );
@@ -512,7 +512,7 @@
 
             // Fetch the scores from the backend
             const result = await fetchData(
-              `https://cpr-csr-managements-1-ve5s.onrender.com/get_scores_by_month?section=${section}&month=${selectedLeadMonth}`
+              `https://score-x81i.onrender.com/get_scores_by_month?section=${section}&month=${selectedLeadMonth}`
             );
             document.getElementById("loading").style.display = "none"; // Hide loading state
 
