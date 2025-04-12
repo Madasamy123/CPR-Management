@@ -1,172 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leads Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
     <style>
-        /* General Body Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f7;
-            margin: 0;
-            padding: 0;
-        }
+      /* General Body Styling */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f4f7;
+        margin: 0;
+        padding: 0;
+      }
 
-        /* Header Styling */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #4caf50, #087f23);
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            height: 60px;
+      /* Header Styling */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #4caf50, #087f23);
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        height: 60px;
+      }
+
+      .header_name h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: #fff;
+      }
+
+      .header_name span {
+        font-weight: bold;
+        color: #ffeb3b;
+      }
+
+      .header_icon {
+        display: flex;
+        gap: 15px;
+      }
+
+      .header_icon i {
+        font-size: 1.5rem;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+
+      .header_icon i:hover {
+        transform: scale(1.1);
+        color: #ffeb3b;
+      }
+
+      /* Main Content Styling */
+      main {
+        display: grid;
+        grid-template-columns: repeat(3, 2fr);
+        gap: 50px;
+        padding: 30px;
+        margin-top: 80px;
+      }
+
+      .card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+        height: 200px;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .card h2 {
+        margin: 10px 0;
+        font-size: 1.2rem;
+        color: #333;
+        margin-top: 90px;
+      }
+
+      .card a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .card-full {
+        /* grid-column: span 3; */
+        background-color: white;
+        color: #00796b;
+        /* padding: 30px; */
+        text-align: left;
+      }
+
+      .card-full h2 {
+        margin-left: 30px;
+        font-size: 1.2rem;
+        margin-top: 90px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        main {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 480px) {
+        main {
+          grid-template-columns: 1fr;
         }
 
         .header_name h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            color: #fff;
-        }
-
-        .header_name span {
-            font-weight: bold;
-            color: #ffeb3b;
-        }
-
-        .header_icon {
-            display: flex;
-            gap: 15px;
+          font-size: 1.5rem;
         }
 
         .header_icon i {
-            font-size: 1.5rem;
-            color: white;
-            cursor: pointer;
-            transition: transform 0.2s ease, color 0.2s ease;
+          font-size: 1.3rem;
         }
-
-        .header_icon i:hover {
-            transform: scale(1.1);
-            color: #ffeb3b;
-        }
-
-        /* Main Content Styling */
-        main {
-            display: grid;
-            grid-template-columns: repeat(3, 2fr);
-            gap: 50px;
-            padding: 30px;
-            margin-top: 80px;
-        }
-
-        .card {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-            height: 200px;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .card h2 {
-            margin: 10px 0;
-            font-size: 1.2rem;
-            color: #333;
-            margin-top: 90px;
-        }
-
-        .card a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .card-full {
-            /* grid-column: span 3; */
-            background-color: white;
-            color: #00796b;
-            /* padding: 30px; */
-            text-align: left;
-        }
-
-        .card-full h2 {
-            margin-left: 30px;
-            font-size: 1.2rem;
-            margin-top: 90px;
-        }
-
-     
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            main {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            main {
-                grid-template-columns: 1fr;
-            }
-
-            .header_name h1 {
-                font-size: 1.5rem;
-            }
-
-            .header_icon i {
-                font-size: 1.3rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="header_name">
-            <h1>Welcome, <span id="name">User</span>!</h1>
-        </div>
-        <div class="header_icon">
-            <a href="../common/change.html"><i class="fa-solid fa-lock"></i></a>
-            <a href="../common/register.html"><i class="fa-solid fa-user-plus"></i></a>
-            <a href="../common/delete-user.html"><i class="fa-solid fa-user-minus"></i></a>
-        </div>
+      <div class="header_name">
+        <h1>Welcome, <span id="name">User</span>!</h1>
+      </div>
+      <div class="header_icon">
+        <a href="../common/change.html"><i class="fa-solid fa-lock"></i></a>
+        <a href="../common/register.html"
+          ><i class="fa-solid fa-user-plus"></i
+        ></a>
+        <a href="../common/delete-user.html"
+          ><i class="fa-solid fa-user-minus"></i
+        ></a>
+      </div>
     </header>
     <main>
-        <div class="card">
-            <a href="./status.html"><h2>CPR Status</h2></a> 
-        </div>
-        <div class="card">
-            <a href="./showslot.html"><h2>CPR Slots</h2></a>
-        </div>
-        <div class="card">
-            <a href="./feedback.html"><h2>Discussion & Feedback</h2></a>
-        </div>
-        <div class="card">
-            <a href="../scores/scores1.html"><h2>Scores</h2></a>
-        </div>
-       
-        <div class="card card-full">
-            <a href="./private-note-lead.html"><h2>Student Progress Overview</h2></a>
-           
-        </div>
-    </main>
+      <div class="card">
+        <a href="./status.html"><h2>CPR Status</h2></a>
+      </div>
+      <div class="card">
+        <a href="./showslot.html"><h2>CPR Slots</h2></a>
+      </div>
+      <div class="card">
+        <a href="./feedback.html"><h2>Discussion & Feedback</h2></a>
+      </div>
+      <div class="card">
+        <a href="../scores/scores1.html"><h2>Scores</h2></a>
+      </div>
 
+      <div class="card card-full">
+        <a href="./private-note-lead.html"
+          ><h2>Student Progress Overview</h2></a
+        >
+      </div>
+    </main>
 
     <script>
       // Ensure the 'user' data is available in localStorage
-      const name = document.getElementById('name');
-      const user = JSON.parse(localStorage.getItem('user'));
+      const name = document.getElementById("name");
+      const token = localStorage.getItem("token");
+      const decoded = decodeJWT(token);
 
-      name.textContent = user.name;
+      function decodeJWT(token) {
+        const payloadBase64 = token.split(".")[1]; // Get the payload part
+        console.log(payloadBase64);
+        const payloadJSON = atob(payloadBase64); // Decode Base64
+        const payload = JSON.parse(payloadJSON); // Convert to object
+        return payload;
+      }
+
+      name.textContent = decoded.name;
     </script>
-</body>
+  </body>
 </html>

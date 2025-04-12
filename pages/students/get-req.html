@@ -144,7 +144,7 @@
 
 <body>
     <header>
-        <a href="/pages/students/students.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <button id="back" class="fa-solid fa-arrow-left" onclick="history.back()">&#8592;</button>
        <h3> MEET YOU COACHES</h3>
        <div></div>
     </header>
@@ -160,8 +160,22 @@
         const slotContainer = document.getElementById("slotContainer");
         const errorMessage = document.getElementById("errorMessage");
 
-        const user = JSON.parse(localStorage.getItem("user"));
-        const studentName = user.name.replace(/\s+/g, "_");
+        const token = localStorage.getItem("token");
+            const decoded = decodeJWT(token);
+
+            function decodeJWT(token) {
+              const payloadBase64 = token.split(".")[1]; // Get the payload part
+              console.log(payloadBase64);
+              const payloadJSON = atob(payloadBase64); // Decode Base64
+              const payload = JSON.parse(payloadJSON); // Convert to object
+              return payload;
+            }
+        const studentName = decoded.name.replace(/\s+/g, "_");
+
+        if (!decoded || decoded.role !== "Student") {
+            alert("Unauthorized access! Redirecting to login page.");
+            window.location.href = "../login.html";
+        }
 
         fetch(`https://cpr-csr-managements-1-ve5s.onrender.com/student-slots/${studentName}`) // check the slot-lead-student.py
             .then((response) => {

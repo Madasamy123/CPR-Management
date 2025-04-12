@@ -9,119 +9,116 @@
     />
     <title>Student Management</title>
     <style>
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        
-        header {
-            text-align: center;
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px 10px;
-            font-size: 1.8rem;
-            
-            display: flex;
-            justify-content: space-between;
-           
-        
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .controls label {
-            font-size: 1rem;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        
-        .controls select {
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th,
-        td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        td>select{
-            height: 30px;
-             background-color:antiquewhite;
-        }
-        
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        
-        button {
-            padding: 10px 15px;
-            font-size: 1rem;
-            border: none;
-            color: white;
-            background-color: #4CAF50;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        
-        button:hover:not(:disabled) {
-            background-color: #45a049;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 20px;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      header {
+        text-align: center;
+        background-color: #4caf50;
+        color: white;
+        padding: 20px 10px;
+        font-size: 1.8rem;
+
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .controls label {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .controls select {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      td > select {
+        height: 30px;
+        background-color: antiquewhite;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      button {
+        padding: 10px 15px;
+        font-size: 1rem;
+        border: none;
+        color: white;
+        background-color: #4caf50;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      button:hover:not(:disabled) {
+        background-color: #45a049;
+      }
+
+      footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 20px;
+      }
 
       * {
         margin: 0;
@@ -238,8 +235,18 @@
     </style>
     <script>
       const fetchStudents = async () => {
+        const token = localStorage.getItem("token");
+        const decoded = decodeJWT(token);
+
+        function decodeJWT(token) {
+          const payloadBase64 = token.split(".")[1]; // Get the payload part
+          console.log(payloadBase64);
+          const payloadJSON = atob(payloadBase64); // Decode Base64
+          const payload = JSON.parse(payloadJSON); // Convert to object
+          return payload;
+        }
         const month = document.getElementById("monthSelect").value;
-        const section = JSON.parse(localStorage.getItem("user")).section; // Fetch section from localStorage
+        const section = decoded.section; // Fetch section from localStorage
         const tableBody = document.getElementById("studentTableBody");
         tableBody.innerHTML = "";
 

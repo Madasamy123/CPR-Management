@@ -182,7 +182,17 @@
     </footer> -->
     <script>
         const API_BASE_URL = 'https://track-goals-student.onrender.com';
-        const sectionSelect = JSON.parse(localStorage.getItem('user')).section;
+        const token = localStorage.getItem("token");
+        const decoded = decodeJWT(token);
+  
+        function decodeJWT(token) {
+          const payloadBase64 = token.split(".")[1]; // Get the payload part
+          console.log(payloadBase64);
+          const payloadJSON = atob(payloadBase64); // Decode Base64
+          const payload = JSON.parse(payloadJSON); // Convert to object
+          return payload;
+        }
+        const sectionSelect = decoded.section;
       
         const monthSelect = document.getElementById('month-select');
         const goalsList = document.getElementById('goals-list');
@@ -191,7 +201,7 @@
         
 
         // Fetch student name from localStorage
-        const studentName = JSON.parse(localStorage.getItem('user')).name;
+        const studentName = decoded.name;
         console.log(studentName)
         if (!studentName) {
             alert("No student name found in localStorage! Please set your name.");

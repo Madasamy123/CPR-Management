@@ -2,202 +2,217 @@
 <!-- score.py -->
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Score Management</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Include the general styles */
-        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #FFF2F2;
-            margin: 0;
-            padding: 0;
-        }
+      /* Include the general styles */
 
-        .header {
-            background-color: #2D336B;
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            height: 60px;
-            display: flex;
-            justify-content: space-between;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff2f2;
+        margin: 0;
+        padding: 0;
+      }
 
-        .fa-arrow-left{
+      .header {
+        background-color: #2d336b;
+        color: white;
+        text-align: center;
+        padding: 15px 0;
+        font-size: 24px;
+        font-weight: bold;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .fa-arrow-left {
         font-size: 35px;
         color: white;
         margin-top: 15px;
-    }
-        
-        .content {
-            margin: 20px;
-        }
-        
-        h2 {
-            color: #333;
-        }
-        
-        .container {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px;
-        }
-        
-        .left,
-        .right {
-            flex: 1;
-        }
-        /* Form Container Styles */
-        
-        .form-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .form-container label {
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .form-container input,
-        .form-container select,
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        
-        .form-container button {
-            background-color: #A9B5DF;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        
-        .form-container button:hover {
-            background-color: #2D336B;
-        }
-        /* Table for displaying student data */
-        
-        .scores-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .table-container {
-            margin-top: 20px;
-        }
-        
-        .table-container th,
-        .table-container td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        
-        .table-container th {
-            background-color: #4caf50;
-            color: white;
-        }
-        
-        .table-container td {
-            background-color: #f9f9f9;
-        }
-        
-        .table-container tr:nth-child(even) td {
-            background-color: #f1f1f1;
-        }
-        
-        .table-container td .score {
-            font-weight: bold;
-            color: #4caf50;
-        }
-        
-        .scores-table th,
-        .scores-table td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        
-        .scores-table th {
-            background-color: #4caf50;
-            color: white;
-        }
-        
-        .scores-table td {
-            background-color: #f9f9f9;
-        }
-        
-        .scores-table tr:nth-child(even) td {
-            background-color: #f1f1f1;
-        }
-        
-        .scores-table td .score {
-            font-weight: bold;
-            color: #4caf50;
-        }
-        /* Message style */
-        
-        .message {
-            color: #ff6f61;
-            font-weight: bold;
-            text-align: center;
-        }
-        /* Spinner for loading state */
-        
-        .loading {
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .loading img {
-            width: 50px;
-            height: 50px;
-        }
+      }
+
+      .content {
+        margin: 20px;
+      }
+
+      h2 {
+        color: #333;
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .left,
+      .right {
+        flex: 1;
+      }
+      /* Form Container Styles */
+
+      .form-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .form-container label {
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .form-container input,
+      .form-container select,
+      .form-container button {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .form-container button {
+        background-color: #a9b5df;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+
+      .form-container button:hover {
+        background-color: #2d336b;
+      }
+      /* Table for displaying student data */
+
+      .scores-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      .table-container {
+        margin-top: 20px;
+      }
+
+      .table-container th,
+      .table-container td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      .table-container th {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .table-container td {
+        background-color: #f9f9f9;
+      }
+
+      .table-container tr:nth-child(even) td {
+        background-color: #f1f1f1;
+      }
+
+      .table-container td .score {
+        font-weight: bold;
+        color: #4caf50;
+      }
+
+      .scores-table th,
+      .scores-table td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      .scores-table th {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .scores-table td {
+        background-color: #f9f9f9;
+      }
+
+      .scores-table tr:nth-child(even) td {
+        background-color: #f1f1f1;
+      }
+
+      .scores-table td .score {
+        font-weight: bold;
+        color: #4caf50;
+      }
+      /* Message style */
+
+      .message {
+        color: #ff6f61;
+        font-weight: bold;
+        text-align: center;
+      }
+      /* Spinner for loading state */
+
+      .loading {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .loading img {
+        width: 50px;
+        height: 50px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
-  <div class="header">
-  <div>   <a href="/pages/students/students.html"><i class="fa-solid fa-arrow-left"></i></a></div>
-  <h3 >Student Scores</h3>
-  <div></div>
-</div>
+  <body>
+    <div class="header">
+      <div>
+        <a href="/pages/students/students.html"
+          ><i class="fa-solid fa-arrow-left"></i
+        ></a>
+      </div>
+      <h3>Student Scores</h3>
+      <div></div>
+    </div>
     <div class="content" id="content"></div>
 
     <script>
-        // Fetching User Role from localStorage
-        const user = JSON.parse(localStorage.getItem("user"));
-        const role = user.role.toLowerCase();
-        const section = user.section;
-        const email = user.email;
+      const token = localStorage.getItem("token");
+      const decoded = decodeJWT(token);
 
-        const contentDiv = document.getElementById("content");
+      function decodeJWT(token) {
+        const payloadBase64 = token.split(".")[1]; // Get the payload part
+        console.log(payloadBase64);
+        const payloadJSON = atob(payloadBase64); // Decode Base64
+        const payload = JSON.parse(payloadJSON); // Convert to object
+        return payload;
+      }
+      // Fetching User Role from localStorage
 
-        // Function to render tables
-        function renderTable(data, container, headers) {
-            let tableHTML = `<table class="subjectTable"><thead><tr>${headers
+      const role = decoded.role.toLowerCase();
+      const section = decoded.section;
+      const email = decoded.email;
+
+      const contentDiv = document.getElementById("content");
+
+      // Function to render tables
+      function renderTable(data, container, headers) {
+        let tableHTML = `<table class="subjectTable"><thead><tr>${headers
           .map((h) => `<th>${h}</th>`)
           .join("")}</tr></thead><tbody>`;
         data.forEach((row) => {
@@ -252,72 +267,73 @@
                 </div>
             `;
 
-            let chartInstance = null; // Store chart instance
+        let chartInstance = null; // Store chart instance
 
-            document
-              .getElementById("viewScoresForm")
-              .addEventListener("submit", async (event) => {
-                event.preventDefault();
-                const selectedStudentMonth =
-                  document.getElementById("selectStudentMonth").value;
-            
-                // Fetch student data from the backend
-                const result = await fetchData(
-                  `https://score-x81i.onrender.com/get_student_scores?email=${email}&section=${section}&month=${selectedStudentMonth}`
-                );
-            
-                console.log(result);
-                if (result.scores) {
-                  const scores = result.scores;
-                  const labels = [
-                    "English",
-                    "Life Skills",
-                    "Tech",
-                    "Problem Solving",
-                    "Self-Learning",
-                    "Behaviour",
-                  ];
-                  document.getElementById("scoresChart").style.width = "100px";  // Reduce width
-                  document.getElementById("scoresChart").style.height = "550px"; // Reduce height
-                  // **Destroy the previous chart before creating a new one**
-                  if (chartInstance) {
-                    chartInstance.destroy();
-                  }
-            
-                  const ctx = document.getElementById("scoresChart").getContext("2d");
-                  chartInstance = new Chart(ctx, {
-                    type: "bar",
-                    data: {
-                      labels: labels,
-                      datasets: [
-                        {
-                          label: `Scores for ${selectedStudentMonth}`,
-                          data: scores,
-                          backgroundColor: "rgba(75, 192, 192, 0.2)",
-                          borderColor: "rgba(75, 192, 192, 1)",
-                          borderWidth: 1,
-                        },
-                      ],
+        document
+          .getElementById("viewScoresForm")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const selectedStudentMonth =
+              document.getElementById("selectStudentMonth").value;
+
+            // Fetch student data from the backend
+            const result = await fetchData(
+              `https://score-x81i.onrender.com/get_student_scores?email=${email}&section=${section}&month=${selectedStudentMonth}`
+            );
+
+            console.log(result);
+            if (result.scores) {
+              const scores = result.scores;
+              const labels = [
+                "English",
+                "Life Skills",
+                "Tech",
+                "Problem Solving",
+                "Self-Learning",
+                "Behaviour",
+              ];
+              document.getElementById("scoresChart").style.width = "100px"; // Reduce width
+              document.getElementById("scoresChart").style.height = "550px"; // Reduce height
+              // **Destroy the previous chart before creating a new one**
+              if (chartInstance) {
+                chartInstance.destroy();
+              }
+
+              const ctx = document
+                .getElementById("scoresChart")
+                .getContext("2d");
+              chartInstance = new Chart(ctx, {
+                type: "bar",
+                data: {
+                  labels: labels,
+                  datasets: [
+                    {
+                      label: `Scores for ${selectedStudentMonth}`,
+                      data: scores,
+                      backgroundColor: "rgba(75, 192, 192, 0.2)",
+                      borderColor: "rgba(75, 192, 192, 1)",
+                      borderWidth: 1,
                     },
-                    options: {
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      scales: {
-                        y: {
-                          beginAtZero: true,
-                          min: 0,
-                          max: 100,
-                        },
-                      },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                      min: 0,
+                      max: 100,
                     },
-                  });
-                } else {
-                  document.getElementById(
-                    "chartContainer"
-                  ).innerHTML = `<p class="message">No scores found for this month.</p>`;
-                }
+                  },
+                },
               });
-            
+            } else {
+              document.getElementById(
+                "chartContainer"
+              ).innerHTML = `<p class="message">No scores found for this month.</p>`;
+            }
+          });
       } else if (role === "admin") {
         contentDiv.innerHTML = `
             <div class="container">
@@ -401,9 +417,7 @@
           .getElementById("viewAllScoresForm")
           .addEventListener("submit", async (event) => {
             event.preventDefault();
-            const selectedSection = JSON.parse(
-              localStorage.getItem("user")
-            ).section;
+            const selectedSection = decoded.section;
             const selectedAdminMonth =
               document.getElementById("selectAdminMonth").value;
             const result = await fetchData(
@@ -556,6 +570,5 @@
           });
       }
     </script>
-</body>
-
+  </body>
 </html>

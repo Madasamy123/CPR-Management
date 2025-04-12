@@ -164,17 +164,14 @@
 
   <body>
     <header>
-<<<<<<< HEAD
-      <a href="/pages/admin/admin.html"
+      <!-- <a href="/pages/admin/admin.html"
         ><i class="fa-solid fa-arrow-left"></i
       ></a>
       <h3>Meetup Slot Booking</h3>
-      <div></div>
-=======
+      <div></div> -->
         <a href="../admin/admin.html"><i class="fa-solid fa-arrow-left"></i></a>
         <h3>Meetup Slot Booking</h3>
        <div></div> 
->>>>>>> db2d4c18691dbd9f281417ef96eed6d645b81b07
     </header>
     <div class="container">
       <!-- <h2>Select a Section</h2>
@@ -215,8 +212,18 @@
 
     <script>
       const apiUrl = "https://meet-admin.onrender.com"; // Adjust if backend is hosted elsewhere
+      const token = localStorage.getItem("token");
+      const decoded = decodeJWT(token);
 
-      const sectionSelect = JSON.parse(localStorage.getItem("user")).section;
+      function decodeJWT(token) {
+        const payloadBase64 = token.split(".")[1]; // Get the payload part
+        console.log(payloadBase64);
+        const payloadJSON = atob(payloadBase64); // Decode Base64
+        const payload = JSON.parse(payloadJSON); // Convert to object
+        return payload;
+      }
+      const sectionSelect = decoded.section;
+      const section = decoded.section;
       const sectionHeader = document.getElementById("sectionHeader");
       const calendarElement = document.getElementById("calendar");
       const slotsContainer = document.getElementById("slots-container");
@@ -228,7 +235,7 @@
       // Fetch calendar data based on section
       function fetchCalendar(section) {
         sectionHeader.textContent = `Calendar for Section ${section}`;
-        fetch(`${apiUrl}/calendar/${section}`)
+        fetch(`https://meet-student.onrender.com/calendar/${section}`)
           .then((response) => response.json())
           .then((data) => {
             calendarElement.innerHTML = ""; // Clear previous calendar
@@ -258,7 +265,7 @@
       // Fetch available slots for a selected date and section
       function fetchSlots(section, date) {
         showLoading();
-        fetch(`${apiUrl}/slots/${section}/${date}`)
+        fetch(`https://meet-student.onrender.com/slots/${section}/${date}`)
           .then((response) => response.json())
           .then((data) => {
             hideLoading();
@@ -299,13 +306,13 @@
         event.preventDefault();
 
         const bookingData = {
-          section: JSON.parse(localStorage.getItem("user")).section,
+          section: decoded .section,
           date: document.getElementById("selectedDate").value,
           time: document.getElementById("selectedSlot").value,
           student_id: document.getElementById("studentId").value,
         };
 
-        fetch(`${apiUrl}/book_slot`, {
+        fetch(`https://meet-admin.onrender.com/book_slot`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

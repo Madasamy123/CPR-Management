@@ -119,16 +119,25 @@
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             // Get student data from localStorage
-            const studentData = JSON.parse(localStorage.getItem("user"));
+            const token = localStorage.getItem("token");
+            const decoded = decodeJWT(token);
+
+            function decodeJWT(token) {
+              const payloadBase64 = token.split(".")[1]; // Get the payload part
+              console.log(payloadBase64);
+              const payloadJSON = atob(payloadBase64); // Decode Base64
+              const payload = JSON.parse(payloadJSON); // Convert to object
+              return payload;
+            }
 
             // Redirect if unauthorized
-            if (!studentData || studentData.role !== "Student") {
+            if (!decoded || decoded.role !== "Student") {
                 alert("Unauthorized access! Redirecting to login page.");
                 window.location.href = "../login.html";
                 return;
             }
 
-            const email = studentData.email;
+            const email = decoded.email;
             const loadingMessage = document.getElementById("loadingMessage");
             const feedbacksList = document.getElementById("feedbacksList");
 

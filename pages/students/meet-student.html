@@ -211,15 +211,7 @@
 
   <body>
     <div class="header">
-      <a href="/pages/students/students.html"
-        ><i class="fa-solid fa-arrow-left"></i></a>
-       
-                <a href="./students.html"><i class="fa-solid fa-arrow-left"></i></a>
-          
-            <h3>Meetup Slot Booking</h3>
-          
-            <div> <span id="bookingMessage" class="booking-message"></span></div>
-
+      <a href="./students.html"><i class="fa-solid fa-arrow-left"></i></a>
       <h3>Meetup Slot Booking</h3>
 
       <div><span id="bookingMessage" class="booking-message"></span></div>
@@ -261,12 +253,21 @@
 
     <script>
       const apiUrl = "https://meet-student.onrender.com";
-      const user = JSON.parse(localStorage.getItem("user")) || {};
+      const token = localStorage.getItem("token");
+      const decoded = decodeJWT(token);
+
+      function decodeJWT(token) {
+        const payloadBase64 = token.split(".")[1]; // Get the payload part
+        console.log(payloadBase64);
+        const payloadJSON = atob(payloadBase64); // Decode Base64
+        const payload = JSON.parse(payloadJSON); // Convert to object
+        return payload;
+      }
 
     
-    const sectionSelect = user ? user.section : null;
-    const studentId = user ? user.name : "";
-    const studentEmail=user ? user.name: "";
+    const sectionSelect = decoded.section;
+    const studentId = decoded.name;
+    const studentEmail= decoded.email;
 
  
 
@@ -373,7 +374,7 @@
           time: document.getElementById("selectedSlot").value,
           student_id: document.getElementById("studentId").value,
           section: sectionSelect,
-  
+          email: studentEmail
         };
 
         fetch(`${apiUrl}/book_slot`, {

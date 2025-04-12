@@ -217,13 +217,11 @@
 
   <body>
     <header>
-      <<<<<<< HEAD
       <a href="/pages/admin/admin.html"
         ><i class="fa-solid fa-arrow-left"></i
       ></a>
       <h1>Student Feedback Dashboard</h1>
       <div></div>
-      =======
       <a href="../admin/admin.html"><i class="fa-solid fa-arrow-left"></i></a>
       <h1>Student Feedback Dashboard</h1>
       <div></div>
@@ -267,7 +265,17 @@
     <script>
       // Automatically set sender email from local storage
       document.addEventListener("DOMContentLoaded", () => {
-        const senderEmail = JSON.parse(localStorage.getItem("user")).email;
+        const token = localStorage.getItem("token");
+        const decoded = decodeJWT(token);
+
+        function decodeJWT(token) {
+          const payloadBase64 = token.split(".")[1]; // Get the payload part
+          console.log(payloadBase64);
+          const payloadJSON = atob(payloadBase64); // Decode Base64
+          const payload = JSON.parse(payloadJSON); // Convert to object
+          return payload;
+        }
+        const senderEmail = decoded.email;
         if (senderEmail) {
           document.getElementById("from").value = senderEmail;
           fetchFeedback(senderEmail); // Automatically fetch feedback for this email

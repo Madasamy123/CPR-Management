@@ -273,6 +273,16 @@
         const detailsContainer = document.getElementById("detailsContainer");
         const slotContainer = document.createElement("div");
         slotContainer.classList.add("slot-container");
+        const token = localStorage.getItem("token");
+        const decoded = decodeJWT(token);
+
+        function decodeJWT(token) {
+          const payloadBase64 = token.split(".")[1]; // Get the payload part
+          console.log(payloadBase64);
+          const payloadJSON = atob(payloadBase64); // Decode Base64
+          const payload = JSON.parse(payloadJSON); // Convert to object
+          return payload;
+        }
 
         let displayedYear = new Date().getFullYear();
         let displayedMonth = new Date().getMonth();
@@ -292,10 +302,8 @@
             "November",
             "December",
         ];
-
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-        const section = user.section || "default_section";
-        const role = user.role;
+        const section = decoded.section || "default_section";
+        const role = decoded.role;
 
         // Change month functionality
         document
@@ -426,10 +434,10 @@
                 date,
                 slot,
                 student: studentName,
-                admin: user.name,
+                admin: decoded.name,
                 section,
             };
-            fetch(`https://calender-jzs8.onrender.com/book-slot-${section}/${date}`, {
+            fetch(`https://slot-lead-student.onrender.com/book-slot-${section}/${date}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -468,7 +476,7 @@
         }
 
         function deleteSlot(slot) {
-            fetch(`https://calender-jzs8.onrender.com/delete-slot/${section}/${slot}`, {
+            fetch(`https://slot-lead-student.onrender.com/delete-slot/${section}/${slot}`, {
                     method: "DELETE",
                 })
                 .then((res) => res.json())
